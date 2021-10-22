@@ -46,7 +46,7 @@ public class Balls {
         ballsCopy.add(new Point(x,y));
     }
 
-    void translate(int dx,int dy){
+    public void translate(int dx,int dy){
         for (Point p : ballsList) p.translate(dx, dy);
     }
 

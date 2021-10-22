@@ -2,3 +2,4 @@ src/gui.jar
 bin/
 .vscode/
 sujet.pdf
+*.class
