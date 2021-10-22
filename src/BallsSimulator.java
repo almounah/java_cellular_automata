@@ -1,6 +1,6 @@
 import gui.Simulable;
 
-public class BallsSimulator implements Simulable {
+public class BallsSimulator implements Simulable{
     private Balls balls;
 
 
@@ -11,6 +11,7 @@ public class BallsSimulator implements Simulable {
     @Override
     public void next(){
         balls.translate(5, 5);
+
     }
     
     @Override
