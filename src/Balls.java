@@ -2,65 +2,62 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
+import java.awt.Color;
 
 public class Balls {
-    private ArrayList<Point> ballsList;
-    private ArrayList<Point> ballsCopy;
+    private ArrayList<Ball> ballsList;
+    private ArrayList<Ball> ballsCopy;
 
-    public Balls(){
-        ballsList = new ArrayList<Point>();
-        ballsCopy = new ArrayList<Point>();
-        addRandomBalls(5, 100);
+    public Balls(int nbToAdd, int w, int h){
+        ballsList = new ArrayList<Ball>();
+        ballsCopy = new ArrayList<Ball>();
+        addRandomBalls(nbToAdd, w, h);
     }
 
-    public Balls(int nbToAdd, int maxCoo){
-        ballsList = new ArrayList<Point>();
-        ballsCopy = new ArrayList<Point>();
-        addRandomBalls(nbToAdd, maxCoo);
-    }
-
-    public ArrayList<Point> getballsList(){
+    public ArrayList<Ball> getballsList(){
         return ballsList;
     }
 
     public void reInit(){
         if(ballsCopy.size() != ballsList.size()) throw new RuntimeException("reInit : Listes de taille différentes!");
-        Iterator<Point> itL = ballsList.iterator();
-        Iterator<Point> itC = ballsCopy.iterator();
-        Point pt,cp;
+        Iterator<Ball> itL = ballsList.iterator();
+        Iterator<Ball> itC = ballsCopy.iterator();
+        Ball b, bc;
         while(itL.hasNext() && itC.hasNext()){
-            pt = itL.next();
-            cp = itC.next();
-            pt.setLocation(cp.getX(), cp.getY());
+            b = itL.next();
+            bc = itC.next();
+            b.getPoint().setLocation(bc.getPoint().getX(), bc.getPoint().getY());
+            b.setDirection(bc.getDx(), bc.getDy());
         }
     }
 
-    public void addRandomBalls(int nbToAdd, int maxCoo){
+    public void addRandomBalls(int nbToAdd, int w, int h){
         Random r = new Random();
+        Color[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW};
         for (int i = 0; i < nbToAdd; i++){
-            addBall(r.nextInt(maxCoo), r.nextInt(maxCoo));
+            addBall(r.nextInt(w), r.nextInt(h), r.nextInt(w/50) - w/100, r.nextInt(h/50) - h/100, colors[r.nextInt(colors.length)], r.nextInt(18) + 2);
         }
     }
 
-    public void addBall(int x, int y){
-        ballsList.add(new Point(x,y));
-        ballsCopy.add(new Point(x,y));
+    public void addBall(int x, int y, int dx, int dy, Color c, int rayon){
+        ballsList.add(new Ball(new Point(x, y), dx, dy, c, rayon));
+        ballsCopy.add(new Ball(new Point(x, y), dx, dy, c, rayon));
     }
 
-    public void translate(int dx,int dy){
-        for (Point p : ballsList) p.translate(dx, dy);
+    public void translate(int w, int h){
+        for (Ball b : ballsList) b.translate(w, h);
     }
 
     public String toStringCP(){
         String str = "BallsCopy ("+this.ballsList.size()+"): ";
-        for (Point p : ballsCopy) str += "["+ p.getX()+";"+p.getY()+"]";
+        for (Ball b : ballsCopy) str += "["+ b.toString()+"]";
         return str;
     }
 
     @Override
     public String toString(){
         String str = "BallsList ("+this.ballsList.size()+"): ";
-        for (Point p : ballsList) str += "["+ p.getX()+";"+p.getY()+"]";
+        for (Ball b : ballsList) str += "["+ b.toString() +"]";
         return str;
     }
 

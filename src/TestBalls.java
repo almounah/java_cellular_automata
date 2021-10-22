@@ -1,6 +1,6 @@
 public class TestBalls {
     public static void main(String[] args) {
-        Balls b = new Balls(5, 100);
+        Balls b = new Balls(10, 100, 100);
         System.out.println("Voici mes balls -> " + b);
 
         System.out.println("Mooving balls ...");

@@ -9,7 +9,7 @@ public class BallsSimulator extends GUISimulator implements Simulable{
 
     public BallsSimulator(int width, int height, java.awt.Color bgColor) {
         super(width, height, bgColor);
-        this.balls = new Balls();
+        this.balls = new Balls(10, width, height);
         setSimulable(this);
     }
 
@@ -17,8 +17,8 @@ public class BallsSimulator extends GUISimulator implements Simulable{
     public void next(){
         balls.translate(5, 5);
         reset();
-        for(java.awt.Point p : balls.getballsList())
-            addGraphicalElement(new Oval((int)p.getX(), (int)p.getY(), Color.WHITE, Color.WHITE, 20));
+        for(Ball b : balls.getballsList())
+            addGraphicalElement(new Oval((int)b.getPoint().getX(), (int)b.getPoint().getY(), b.getColor(), b.getColor(), b.getRayon()));
     }
 
     @Override
@@ -32,8 +32,8 @@ public class BallsSimulator extends GUISimulator implements Simulable{
     public void restart(){
         balls.reInit();
         reset();
-        for(java.awt.Point p : balls.getballsList())
-            addGraphicalElement(new Oval((int)p.getX(), (int)p.getY(), Color.WHITE, Color.WHITE, 20));
+        for(Ball b : balls.getballsList())
+            addGraphicalElement(new Oval((int)b.getPoint().getX(), (int)b.getPoint().getY(), b.getColor(), b.getColor(), b.getRayon()));
     }
 
 }
