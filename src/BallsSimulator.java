@@ -1,5 +1,3 @@
-import javax.sound.sampled.SourceDataLine;
-
 import gui.Simulable;
 import gui.GUISimulator;
 import gui.Oval;
