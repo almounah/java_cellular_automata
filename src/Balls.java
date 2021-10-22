@@ -10,6 +10,7 @@ public class Balls {
     public Balls(){
         ballsList = new ArrayList<Point>();
         ballsCopy = new ArrayList<Point>();
+        addRandomBalls(5, 100);
     }
 
     public Balls(int nbToAdd, int maxCoo){
