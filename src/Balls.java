@@ -33,9 +33,22 @@ public class Balls {
 
     public void addRandomBalls(int nbToAdd, int w, int h){
         Random r = new Random();
-        Color[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW};
+        int x, y, dx, dy, radius;
+        Color c;
+        int maxSpeed = (h+w)/100; // moyenne/50
+        int radiusMin = 20, radiusMax = 30;        
+        Color[] colors = {
+            Color.RED, Color.BLUE, Color.GREEN, Color.ORANGE,
+            Color.CYAN, Color.MAGENTA, Color.YELLOW, Color.PINK,};
+        
         for (int i = 0; i < nbToAdd; i++){
-            addBall(r.nextInt(w), r.nextInt(h), r.nextInt(w/50) - w/100, r.nextInt(h/50) - h/100, colors[r.nextInt(colors.length)], r.nextInt(18) + 2);
+            x = r.nextInt(w);
+            y = r.nextInt(h);
+            dx =  r.nextInt(maxSpeed) - maxSpeed/2; //soustraction pour centrer l'intervalle en 0 
+            dy = r.nextInt(maxSpeed) - maxSpeed/2;
+            c = colors[i%colors.length];
+            radius = r.nextInt(radiusMax-radiusMin) + radiusMin;
+            addBall(x, y, dx, dy, c, radius);
         }
     }
 

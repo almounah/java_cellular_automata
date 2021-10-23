@@ -1,24 +1,45 @@
 import gui.Simulable;
 import gui.GUISimulator;
 import gui.Oval;
+import gui.Rectangle;
+
 import java.awt.Color;
 
 public class BallsSimulator extends GUISimulator implements Simulable{
     private Balls balls;
 
 
-    public BallsSimulator(int width, int height, java.awt.Color bgColor) {
+    public BallsSimulator(int width, int height, java.awt.Color bgColor, int nbBalls) {
         super(width, height, bgColor);
-        this.balls = new Balls(10, width, height);
+        this.balls = new Balls(nbBalls, width, height);
         setSimulable(this);
+    }
+
+    //Dessine les bords du "panel", où les balls peuvent se déplacer
+    private void drawEdge(Color c){
+        int w = getPanelWidth();
+        int h = getPanelHeight();
+        Rectangle r = new Rectangle(w/2,0, c, c, w, 1);
+        addGraphicalElement(r);
+        r = new Rectangle(0,h/2, c, c, 1, h);
+        addGraphicalElement(r);
+        r = new Rectangle(w/2,h-1, c, c, w, 1);
+        addGraphicalElement(r);
+        r = new Rectangle(w-1,h/2, c, c, 1, h);
+        addGraphicalElement(r);
+    }
+
+    private void drawBalls(){
+        for(Ball b : balls.getballsList())
+            addGraphicalElement(new Oval((int)b.getPoint().getX(), (int)b.getPoint().getY(), b.getColor(), b.getColor(), b.getRayon()*2));
     }
 
     @Override
     public void next(){
-        balls.translate(5, 5);
+        balls.translate(getPanelWidth(), getPanelHeight());
         reset();
-        for(Ball b : balls.getballsList())
-            addGraphicalElement(new Oval((int)b.getPoint().getX(), (int)b.getPoint().getY(), b.getColor(), b.getColor(), b.getRayon()));
+        drawEdge(Color.white);
+        drawBalls();
     }
 
     @Override
@@ -32,8 +53,8 @@ public class BallsSimulator extends GUISimulator implements Simulable{
     public void restart(){
         balls.reInit();
         reset();
-        for(Ball b : balls.getballsList())
-            addGraphicalElement(new Oval((int)b.getPoint().getX(), (int)b.getPoint().getY(), b.getColor(), b.getColor(), b.getRayon()));
+        drawEdge(Color.white);
+        drawBalls();
     }
 
 }

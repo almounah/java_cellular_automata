@@ -16,9 +16,39 @@ public class Ball {
         this.c = c;
         this.rayon = rayon;
     }
+
+    private int getNewX(int w){
+        int maxX = w-1-rayon;
+        int minX = rayon;
+        int x = (int) getPoint().getX();
+        int nx = x + dx;
+        if (nx < minX){
+            nx = minX + (minX-nx); // nx = limite + dépassement
+            dx = -dx; //A changer pour physique
+        } else if (nx > maxX){
+            nx = maxX - (nx - maxX);
+            dx = -dx;
+        }
+        return nx;
+    }
+
+    private int getNewY(int h){
+        int maxY = h-1-rayon;
+        int minY = rayon;
+        int y = (int) getPoint().getY();
+        int ny = y + dy;
+        if (ny < minY){
+            ny = minY + (minY-ny);
+            dy = -dy;
+        } else if (ny > maxY){
+            ny = maxY - (ny - maxY);
+            dy = -dy;
+        }
+        return ny;
+    }
     
     public void translate(int w, int h){
-        p.setLocation(p.getX() + dx, p.getY() + dy);
+        p.setLocation(getNewX(w),getNewY(h));
     }
 
     public void setDirection(int dx, int dy){
