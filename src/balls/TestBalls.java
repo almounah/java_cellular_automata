@@ -1,3 +1,6 @@
+
+package balls;
+
 public class TestBalls {
     public static void main(String[] args) {
         Balls b = new Balls(10, 100, 100);

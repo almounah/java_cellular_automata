@@ -1,3 +1,5 @@
+package balls;
+
 import gui.Simulable;
 import gui.GUISimulator;
 import gui.Oval;

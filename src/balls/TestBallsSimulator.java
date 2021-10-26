@@ -1,3 +1,5 @@
+package balls;
+
 import gui.GUISimulator;
 import java.awt.Color;
 
