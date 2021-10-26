@@ -1,4 +1,4 @@
-package balls;
+package fr.balls;
 
 import gui.Simulable;
 import gui.GUISimulator;
@@ -11,7 +11,7 @@ public class BallsSimulator extends GUISimulator implements Simulable{
     private Balls balls;
 
 
-    public BallsSimulator(int width, int height, java.awt.Color bgColor, int nbBalls) {
+    public BallsSimulator(int width, int height, Color bgColor, int nbBalls) {
         super(width, height, bgColor);
         this.balls = new Balls(nbBalls, width, height);
         setSimulable(this);
@@ -33,7 +33,15 @@ public class BallsSimulator extends GUISimulator implements Simulable{
 
     private void drawBalls(){
         for(Ball b : balls.getballsList())
-            addGraphicalElement(new Oval((int)b.getPoint().getX(), (int)b.getPoint().getY(), b.getColor(), b.getColor(), b.getRayon()*2));
+            addGraphicalElement(
+                new Oval(
+                    (int)b.getPosition().x,
+                    (int)b.getPosition().y,
+                    b.getColor(), 
+                    b.getColor(), 
+                    b.getRayon()*2
+                )
+            );
     }
 
     @Override

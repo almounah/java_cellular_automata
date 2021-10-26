@@ -1,5 +1,6 @@
-package balls;
+package fr.tests;
 
+import fr.balls.*;
 import gui.GUISimulator;
 import java.awt.Color;
 

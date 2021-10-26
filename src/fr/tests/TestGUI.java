@@ -1,4 +1,6 @@
 
+package fr.tests;
+
 import gui.*;
 
 import java.awt.Color;

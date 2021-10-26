@@ -1,10 +1,11 @@
-package balls;
+package fr.balls;
 
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 import java.awt.Color;
+import fr.glob.MyVector;
 
 public class Balls {
     private ArrayList<Ball> ballsList;
@@ -24,12 +25,16 @@ public class Balls {
         if(ballsCopy.size() != ballsList.size()) throw new RuntimeException("reInit : Listes de taille différentes!");
         Iterator<Ball> itL = ballsList.iterator();
         Iterator<Ball> itC = ballsCopy.iterator();
-        Ball b, bc;
+        Ball b, bc; MyVector v, vc;
         while(itL.hasNext() && itC.hasNext()){
             b = itL.next();
             bc = itC.next();
-            b.getPoint().setLocation(bc.getPoint().getX(), bc.getPoint().getY());
-            b.setDirection(bc.getDx(), bc.getDy());
+            v = b.getPosition();
+            vc = bc.getPosition();
+            v.x = vc.x; v.y = vc.y; //Reset pos
+            v = b.getvitesse();
+            vc = bc.getvitesse();
+            v.x = vc.x; v.y = vc.y; //Reset velocité
         }
     }
 
@@ -44,19 +49,19 @@ public class Balls {
             Color.CYAN, Color.MAGENTA, Color.YELLOW, Color.PINK,};
         
         for (int i = 0; i < nbToAdd; i++){
-            x = r.nextInt(w);
-            y = r.nextInt(h);
+            radius = r.nextInt(radiusMax-radiusMin) + radiusMin;
+            x = r.nextInt(w-radius) + radius; // Intervalle [radius; w-radius]
+            y = r.nextInt(h-radius) + radius;
             dx =  r.nextInt(maxSpeed) - maxSpeed/2; //soustraction pour centrer l'intervalle en 0 
             dy = r.nextInt(maxSpeed) - maxSpeed/2;
             c = colors[i%colors.length];
-            radius = r.nextInt(radiusMax-radiusMin) + radiusMin;
-            addBall(x, y, dx, dy, c, radius);
+            addBall(new MyVector(x, y), new MyVector(dx, dy), c, radius);
         }
     }
 
-    public void addBall(int x, int y, int dx, int dy, Color c, int rayon){
-        ballsList.add(new Ball(new Point(x, y), dx, dy, c, rayon));
-        ballsCopy.add(new Ball(new Point(x, y), dx, dy, c, rayon));
+    public void addBall(MyVector position, MyVector vitesse, Color c, int rayon){
+        ballsList.add(new Ball(position, vitesse, c, rayon));
+        ballsCopy.add(new Ball(position, vitesse, c, rayon));
     }
 
     public void translate(int w, int h){

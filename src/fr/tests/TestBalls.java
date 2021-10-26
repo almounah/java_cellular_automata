@@ -1,5 +1,7 @@
+package fr.tests;
 
-package balls;
+import fr.balls.*;
+
 
 public class TestBalls {
     public static void main(String[] args) {
