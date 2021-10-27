@@ -51,20 +51,19 @@ public class BallsSimulator extends GUISimulator implements Simulable{
         drawEdge(Color.white);
         drawBalls();
     }
-
-    @Override
-    public String toString() {
-        return "{" +
-            " balls='" + balls + "'" +
-            "}";
-    }
-
     @Override
     public void restart(){
         balls.reInit();
         reset();
         drawEdge(Color.white);
         drawBalls();
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+            " balls='" + balls + "'" +
+            "}";
     }
 
 }

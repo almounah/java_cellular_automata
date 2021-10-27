@@ -1,4 +1,4 @@
-package boids;
+package fr.boids;
 
 import fr.glob.MyVector;
 import java.awt.Color;
@@ -8,26 +8,17 @@ public class Agent {
     private MyVector position;
     private MyVector vitesse;
     private MyVector acceleration;
-    private float rayon;
-    private float masse = 1;
+    private int rayon;
+    private double masse = 30.0;
     private Color color;
 
-    static public double vitMax = 10.0;
-    static public double accelMax = 1.0;
+    static public double accelMax = 5.0; // Méga camion de 2 tonnes ou F1?
 
     //Constructeur
 
-    public Agent(MyVector position, float rayon, Color c) {
+    public Agent(MyVector position, int rayon, Color c) {
         this.position = position;
-        this.vitesse = new MyVector(0,0);
-        this.acceleration = new MyVector(0,0);
-        this.rayon = rayon;
-        this.color = c;
-    }
-
-    public Agent(double x, double y, float rayon, Color c) {
-        this.position = new MyVector(x,y);
-        this.vitesse = new MyVector(0,0);
+        this.vitesse = new MyVector(10,0);
         this.acceleration = new MyVector(0,0);
         this.rayon = rayon;
         this.color = c;
@@ -38,53 +29,69 @@ public class Agent {
     public void appliquerForce(MyVector force){
         MyVector f = new MyVector(force); //Pour ne pas changer la variable force
         f.div(masse); // 2eme loi de Newton
-        acceleration.add(force);
+        System.out.println("Applique f = "+ force + " | Soit-> " + f);
+        acceleration.add(f);
     }
 
     //Algo qui permet de rejoindre un point à l'aide de la 'steer force' de Reynolds
     public void rejoindre(MyVector cible){
-        MyVector desired = MyVector.sub(cible, position);
+        double vitMax = 10.0;
+        MyVector desired = MyVector.sub(cible, position); //variation de pos = vitesse
         desired.normalize();
         desired.mult(vitMax); // Pour ne pas foncer à toutes berzingue
         MyVector steer = MyVector.sub(desired, vitesse); //'steer force' de Reynolds
-        steer.limit(accelMax);
         appliquerForce(steer);
     }
 
     //Met à jour l'accel en fct de la proximité au bords
     public void checkBounds(int w, int h, int limiteBord){
         int forceBord = 0;
-        if(position.x < rayon+limiteBord){
-            forceBord = limiteBord - (position.x -rayon);
+        int x = (int)position.x, y = (int)position.y;
+        if(x < rayon+limiteBord){
+            System.out.println("GAUCHE");
+            forceBord = limiteBord - (x -rayon);
             // plus on est proche, plus on est poussé fort
             appliquerForce(new MyVector(forceBord, 0));
             forceBord = 0;
         } 
-        if(position.x > w-limiteBord-rayon){
-            forceBord = position.x+rayon - (w-limiteBord);
+        if(x > w-limiteBord-rayon){
+            System.out.println("DROITE");
+            forceBord = x+rayon - (w-limiteBord);
             appliquerForce(new MyVector(-forceBord, 0));
-            forceBord = 0;
+            forceBord = 0; 
         }
-        if(position.y < rayon+limiteBord){
-            forceBord = limiteBord - (position.y -rayon);
+        if(y < rayon+limiteBord){
+            System.out.println("HAUT");
+            forceBord = limiteBord - (y -rayon);
             appliquerForce(new MyVector(0, forceBord));
             forceBord = 0;
         }
-        if(position.y < h-limiteBord-rayon){
-            forceBord = position.y+rayon - (h-limiteBord);
+        if(y > h-limiteBord-rayon){
+            System.out.println("BAS");
+            forceBord = y+rayon - (h-limiteBord);
             appliquerForce(new MyVector(0,-forceBord));
             forceBord = 0;
         }
+
+        if(x<0) position.x = 0;
+        if(y<0) position.y = 0;
+        if(x>w) position.x = w-1;
+        if(y>h) position.y = h-1;
     }
 
     public void update(int w, int h){
-        checkBounds(w,h,25);
-        
-        acceleration.add(new MyVector(1, 5));// Vent léger a droite + gravité
+        System.out.println("==========");
+        System.out.println("Avant -> "+ this.toString());
 
+        checkBounds(w,h,50);
+        rejoindre(new MyVector(w/2, h/2));
+        
+        acceleration.limit(accelMax);//On limite l'accel max après avoir appliqué toutes les forces
         vitesse.add(acceleration);
         position.add(vitesse);
+
         //A la fin on multiplie par 0 (1ere loi Newton)
+        System.out.println("Après -> "+ this.toString());
         acceleration.mult(0);
     }
 
@@ -103,7 +110,7 @@ public class Agent {
         return this.acceleration;
     }
 
-    public float getRayon() {
+    public int getRayon() {
         return this.rayon;
     }
 
@@ -112,5 +119,13 @@ public class Agent {
     }
 
 
+    @Override
+    public String toString() {
+        return
+            "Agents = position=" + getPosition() + 
+            ", vitesse=" + getVitesse() + 
+            ", acceleration=" + getAcceleration();
+    }
+    
   
 }

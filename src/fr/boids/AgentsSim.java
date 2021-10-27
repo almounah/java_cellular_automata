@@ -12,11 +12,11 @@ public class AgentsSim extends GUISimulator implements Simulable {
 
     public AgentsSim(int width, int height, Color bgColor, int nbAgents) {
         super(width, height, bgColor);
-        this.balls = new Agents(nbAgents, width, height);
+        this.agents = new Agents(nbAgents, width, height);
         setSimulable(this);
     }
 
-    //Dessine les bords du "panel", où les balls peuvent se déplacer
+    //Dessine les bords du "panel"
     private void drawEdge(Color c){
         int w = getPanelWidth();
         int h = getPanelHeight();
@@ -28,11 +28,35 @@ public class AgentsSim extends GUISimulator implements Simulable {
         addGraphicalElement(r);
         r = new Rectangle(w-1,h/2, c, c, 1, h);
         addGraphicalElement(r);
+
+        //Partie perso
+        Oval o = new Oval(w/2, h/2, Color.yellow, Color.DARK_GRAY, 20);
+        addGraphicalElement(o);
     }
 
     private void drawAgents(){
         for(Agent a : agents.getAgents())
             addGraphicalElement(
-                new Oval(x, y, drawColor, fillColor, size);
+                new Oval(
+                    (int) a.getPosition().x, 
+                    (int) a.getPosition().y, 
+                    a.getColor(), 
+                    a.getColor(), 
+                    a.getRayon()));
+    }
+    @Override
+    public void next(){
+        agents.update(getPanelWidth(), getPanelHeight());
+        reset();
+        drawEdge(Color.white);
+        drawAgents();
+    }
+
+    @Override
+    public void restart(){
+        agents.reInit();
+        reset();
+        drawEdge(Color.white);
+        drawAgents();
     }
 }
