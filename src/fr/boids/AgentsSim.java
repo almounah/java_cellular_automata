@@ -1,4 +1,4 @@
-package fr.balls;
+package fr.boids;
 
 import gui.Simulable;
 import gui.GUISimulator;
@@ -7,17 +7,16 @@ import gui.Rectangle;
 
 import java.awt.Color;
 
-public class BallsSimulator extends GUISimulator implements Simulable{
-    private Balls balls;
+public class AgentsSim extends GUISimulator implements Simulable {
+    private Agents agents;
 
-
-    public BallsSimulator(int width, int height, Color bgColor, int nbBalls) {
+    public AgentsSim(int width, int height, Color bgColor, int nbAgents) {
         super(width, height, bgColor);
-        this.balls = new Balls(nbBalls, width, height);
+        this.agents = new Agents(nbAgents, width, height);
         setSimulable(this);
     }
 
-    //Dessine les bords du "panel", où les balls peuvent se déplacer
+    //Dessine les bords du "panel"
     private void drawEdge(Color c){
         int w = getPanelWidth();
         int h = getPanelHeight();
@@ -29,41 +28,35 @@ public class BallsSimulator extends GUISimulator implements Simulable{
         addGraphicalElement(r);
         r = new Rectangle(w-1,h/2, c, c, 1, h);
         addGraphicalElement(r);
+
+        //Partie perso
+        Oval o = new Oval(w/2, h/2, Color.yellow, Color.DARK_GRAY, 20);
+        addGraphicalElement(o);
     }
 
-    private void drawBalls(){
-        for(Ball b : balls.getballsList())
+    private void drawAgents(){
+        for(Agent a : agents.getAgents())
             addGraphicalElement(
                 new Oval(
-                    (int)b.getPosition().x,
-                    (int)b.getPosition().y,
-                    b.getColor(), 
-                    b.getColor(), 
-                    b.getRayon()*2
-                )
-            );
+                    (int) a.getPosition().x, 
+                    (int) a.getPosition().y, 
+                    a.getColor(), 
+                    a.getColor(), 
+                    a.getRayon()));
     }
-
     @Override
     public void next(){
-        balls.translate(getPanelWidth(), getPanelHeight());
+        agents.update(getPanelWidth(), getPanelHeight());
         reset();
         drawEdge(Color.white);
-        drawBalls();
+        drawAgents();
     }
+
     @Override
     public void restart(){
-        balls.reInit();
+        agents.reInit();
         reset();
         drawEdge(Color.white);
-        drawBalls();
+        drawAgents();
     }
-
-    @Override
-    public String toString() {
-        return "{" +
-            " balls='" + balls + "'" +
-            "}";
-    }
-
 }

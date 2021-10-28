@@ -32,6 +32,9 @@ testBallsSim:
 testConway:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/fr/tests/TestConwaySimulator.java
 
+testAgentsSim:
+	javac -d bin -classpath bin/gui.jar -sourcepath src src/fr/tests/TestAgentsSim.java
+
 # Execution:
 # on peut taper directement la ligne de commande :
 #   > java -classpath bin TestGUI
@@ -45,6 +48,9 @@ exeBallsSims:
 
 exeConway:
 	java -classpath bin:bin/gui.jar fr/tests/TestConwaySimulator
+
+exeAgentsSim:
+	java -classpath bin:bin/gui.jar fr/tests/TestAgentsSim
 
 clean:
 	rm -rf bin/fr
