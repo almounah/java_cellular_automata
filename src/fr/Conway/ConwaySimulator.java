@@ -53,11 +53,11 @@ public class ConwaySimulator extends GUISimulator implements Simulable {
             int y = list_y.get(i);
             if (grid.grid[y][x]==1) {
                 draw_cube(x*size_of_square, y*size_of_square, Color.BLACK); 
-                } else {
-                   draw_cube(x*size_of_square, y*size_of_square, Color.WHITE); 
-                }
-            } 
-        }
+            } else {
+                draw_cube(x*size_of_square, y*size_of_square, Color.WHITE); 
+            }
+        } 
+    }
 
     public void draw_grid_init() {
         for (int i = 0; i < rows; i++) {

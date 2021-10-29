@@ -49,15 +49,12 @@ public class ConwayGrid {
         x_after = (x == rows-1) ? 0 : x+1;
         y_before = (y == 0) ? column-1 : y-1;
         y_after = (y == column-1) ? 0 : y+1;
-
-        int neighboor_sum = 0;
-        for (int i = x_before; i <= x_after; i++) {
-            for (int j = y_before; j <= y_after; j++) {
-                neighboor_sum += grid[j][i];
-            }
-        }
         
-        neighboor_sum -= grid[y][x];
+        int neighboor_sum = 0;
+        neighboor_sum += grid[y_before][x_before] + grid[y_before][x] + grid[y_before][x_after];
+        neighboor_sum += grid[y][x_before] + grid[y][x_after];
+        neighboor_sum += grid[y_after][x_before] + grid[y_after][x] + grid[y_after][x_after];
+        
         if (neighboor_sum == 3 && grid[y][x] == 0) {
             return true;
         } else if ((neighboor_sum > 3 || neighboor_sum < 2) && grid[y][x] == 1) {
