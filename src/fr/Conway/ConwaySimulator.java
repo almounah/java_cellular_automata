@@ -10,8 +10,9 @@ import java.util.ArrayList;
 public class ConwaySimulator extends GUISimulator implements Simulable {
     public int size_of_square, rows; //taille d'un petit carre et le nombre de ligne
     public int init_alive;
-    public ConwayGrid grid;
     public int half_square; 
+    private Color list_Colors[] = {Color.WHITE, Color.BLACK};
+    private ConwayGrid grid;
 
     public ConwaySimulator(int size_of_square, int rows, int init_alive) {
         super(size_of_square*rows, size_of_square*rows, Color.BLACK);
@@ -51,23 +52,15 @@ public class ConwaySimulator extends GUISimulator implements Simulable {
         for (int i = 0; i < list_x.size(); i++) {
             int x = list_x.get(i);
             int y = list_y.get(i);
-            if (grid.grid[y][x]==1) {
-                draw_cube(x*size_of_square, y*size_of_square, Color.BLACK); 
-            } else {
-                draw_cube(x*size_of_square, y*size_of_square, Color.WHITE); 
-            }
+            draw_cube(x*size_of_square, y*size_of_square, list_Colors[grid.grid[y][x]]); 
         } 
     }
 
     public void draw_grid_init() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < rows; j++) {  
-                if (grid.grid[j][i]==1) {
-                    draw_cube(i*size_of_square, j*size_of_square, Color.BLACK); 
-                } else {
-                    draw_cube(i*size_of_square, j*size_of_square, Color.WHITE); 
-                } 
-            } 
+                draw_cube(i*size_of_square, j*size_of_square, list_Colors[grid.grid[j][i]]); 
+            }
         }
     }
 
@@ -77,7 +70,8 @@ public class ConwaySimulator extends GUISimulator implements Simulable {
     }
     @Override
     public void next() {
-        HashMap<String,ArrayList<Integer>> map = this.grid.update_grid();
+        HashMap<String,ArrayList<Integer>> map = this.grid.get_to_change_list();
+        this.grid.update_grid(map);
         this.draw_grid(map);
 
     }

@@ -21,7 +21,7 @@
 #   -classpath : repertoire dans lequel sont cherches les .class deja compiles
 #   -sourcepath : repertoire dans lequel sont cherches les .java (dependances)
 
-all: testGUI testBallsSim
+all: testGUI testBallsSim testConway testImmigration
 
 testGUI:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/fr/tests/TestGUI.java
@@ -31,6 +31,9 @@ testBallsSim:
 
 testConway:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/fr/tests/TestConwaySimulator.java
+
+testImmigration:
+	javac -d bin -classpath bin/gui.jar -sourcepath src src/fr/tests/TestImmigrationSimulator.java
 
 testAgentsSim:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/fr/tests/TestAgentsSim.java
@@ -48,6 +51,9 @@ exeBallsSims:
 
 exeConway:
 	java -classpath bin:bin/gui.jar fr/tests/TestConwaySimulator
+
+exeImmigration:
+	java -classpath bin:bin/gui.jar fr/tests/TestImmigrationSimulator
 
 exeAgentsSim:
 	java -classpath bin:bin/gui.jar fr/tests/TestAgentsSim

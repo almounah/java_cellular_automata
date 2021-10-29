@@ -64,7 +64,7 @@ public class ConwayGrid {
         return false;
     }
 
-    public HashMap<String,ArrayList<Integer>> update_grid() {
+    public HashMap<String,ArrayList<Integer>> get_to_change_list() {
         ArrayList<Integer> list_tochange_x = new ArrayList<Integer>();
         ArrayList<Integer> list_tochange_y = new ArrayList<Integer>();;
        
@@ -82,10 +82,19 @@ public class ConwayGrid {
             }
         }
         
+        return map;
+    }
+
+    public void update_grid(HashMap<String,ArrayList<Integer>> map) {
+        
+        ArrayList<Integer> list_tochange_x = map.get("x_coord");
+        ArrayList<Integer> list_tochange_y = map.get("y_coord");
+        
         for (int i = 0; i < list_tochange_x.size(); i++) {
             grid[list_tochange_y.get(i)][list_tochange_x.get(i)]++;
             grid[list_tochange_y.get(i)][list_tochange_x.get(i)] %= 2;
         }
-        return map;
     }
+
+
 }
