@@ -10,6 +10,6 @@ import gui.GUISimulator;
 public class TestImmigrationSimulator {
 
     public static void main(String[] args) {
-        GUISimulator gui = new ImmigrationSimulator(20, 30, 4);
+        GUISimulator gui = new ImmigrationSimulator(20, 20, 4);
     }
 }

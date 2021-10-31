@@ -9,6 +9,6 @@ import java.awt.Color;
  */
 public class TestConwaySimulator {
     public static void main(String[] args) {
-        GUISimulator gui = new ConwaySimulator(20, 30, 100); 
+        GUISimulator gui = new ConwaySimulator(20, 20, 50); 
     }
 }
