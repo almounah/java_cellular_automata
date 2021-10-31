@@ -57,6 +57,7 @@ public class ConwaySimulator extends GUISimulator implements Simulable {
     }
 
     public void draw_grid_init() {
+        System.out.println(rows);
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < rows; j++) {  
                 draw_cube(i*size_of_square, j*size_of_square, list_Colors[grid.grid[j][i]]); 

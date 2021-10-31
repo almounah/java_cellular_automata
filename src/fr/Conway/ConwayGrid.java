@@ -45,9 +45,9 @@ public class ConwayGrid {
         int x_before, x_after;
         int y_before, y_after;
 
-        x_before = (x == 0) ? rows-1 : x-1;
+        x_before = (rows + x-1)%rows;
         x_after = (x+1)%rows;
-        y_before = (y == 0) ? column-1 : y-1;
+        y_before = (column + y-1)%column;
         y_after = (y+1)%column;
         
         int neighboor_sum = 0;
@@ -64,6 +64,7 @@ public class ConwayGrid {
         return false;
     }
 
+    // return the map of the coordinate of the cells to change
     public HashMap<String,ArrayList<Integer>> get_to_change_list() {
         ArrayList<Integer> list_tochange_x = new ArrayList<Integer>();
         ArrayList<Integer> list_tochange_y = new ArrayList<Integer>();;
