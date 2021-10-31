@@ -11,15 +11,22 @@ public class ConwaySimulator extends GUISimulator implements Simulable {
     public int size_of_square, rows; //taille d'un petit carre et le nombre de ligne
     public int init_alive;
     public int half_square; 
-    private Color list_Colors[] = {Color.WHITE, Color.BLACK};
+    private Color list_Colors[]; 
     private ConwayGrid grid;
 
-    public ConwaySimulator(int size_of_square, int rows, int init_alive) {
+    public ConwaySimulator(int size_of_square, int rows, int init_alive) { 
+
+        this(size_of_square, rows, init_alive, new ConwayGrid(rows, rows, init_alive), new Color[]{Color.WHITE, Color.BLACK}); // we chose a squared grid always 
+    }
+
+
+    protected ConwaySimulator(int size_of_square, int rows, int init_alive, ConwayGrid grid, Color list_Colors[]) {
         super(size_of_square*rows, size_of_square*rows, Color.BLACK);
         this.size_of_square = size_of_square;
         this.rows = rows;
         this.init_alive = init_alive;
-        grid = new ConwayGrid(rows, rows, init_alive); // we chose a squared grid always 
+        this.grid = grid;
+        this.list_Colors = list_Colors;
         setSimulable(this);
         half_square = size_of_square/2;
     }
@@ -39,7 +46,7 @@ public class ConwaySimulator extends GUISimulator implements Simulable {
     public void draw_cube(int x, int y, Color c) {
         /*x and y are the coordinate of the top left*/    
         Rectangle r;
-        int cube_size = size_of_square - 4;
+        int cube_size = size_of_square-4;
         int x_center = x + half_square;
         int y_center = y + half_square;
         r = new Rectangle(x_center, y_center, c, c, cube_size, cube_size);
@@ -57,7 +64,6 @@ public class ConwaySimulator extends GUISimulator implements Simulable {
     }
 
     public void draw_grid_init() {
-        System.out.println(rows);
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < rows; j++) {  
                 draw_cube(i*size_of_square, j*size_of_square, list_Colors[grid.grid[j][i]]); 
