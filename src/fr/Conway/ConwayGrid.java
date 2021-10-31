@@ -46,9 +46,9 @@ public class ConwayGrid {
         int y_before, y_after;
 
         x_before = (x == 0) ? rows-1 : x-1;
-        x_after = (x == rows-1) ? 0 : x+1;
+        x_after = (x+1)%rows;
         y_before = (y == 0) ? column-1 : y-1;
-        y_after = (y == column-1) ? 0 : y+1;
+        y_after = (y+1)%column;
         
         int neighboor_sum = 0;
         neighboor_sum += grid[y_before][x_before] + grid[y_before][x] + grid[y_before][x_after];
