@@ -11,11 +11,10 @@ import java.util.ArrayList;
 public class ImmigrationSimulator extends ConwaySimulator{
     
     public int states_number;
-    private Color list_Colors[] = {Color.WHITE, Color.LIGHT_GRAY, Color.GRAY, Color.BLACK};
 
-    public ImmigrationSimulator(int size_of_square, int rows, int states_number) {
-        super(size_of_square, rows, 0, new ImmigrationGrid(rows, rows, states_number), new Color[]{Color.WHITE, Color.LIGHT_GRAY, Color.GRAY, Color.BLACK});
-        this.states_number = states_number;
+    public ImmigrationSimulator(int size_of_square, int rows, Color[] list_color) {
+        super(size_of_square, rows, 0, new ImmigrationGrid(rows, rows, list_color.length), list_color);
+        this.states_number = list_color.length;
     }
 
 }
