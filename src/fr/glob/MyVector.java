@@ -19,6 +19,11 @@ public class MyVector {
         return new MyVector(a.x - b.x, a.y - b.y);
     }
 
+    public double dst(MyVector a){
+        MyVector d = sub(this,a);
+        return d.masse();
+    }
+
     public void setXY(MyVector a){
         this.x = a.x;
         this.y = a.y;

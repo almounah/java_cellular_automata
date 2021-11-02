@@ -60,7 +60,7 @@ public class Balls {
 
     public void addBall(MyVector position, MyVector vitesse, Color c, int rayon){
         ballsList.add(new Ball(position, vitesse, c, rayon));
-        ballsCopy.add(new Ball(position, vitesse, c, rayon));
+        ballsCopy.add(new Ball(new MyVector(position), new MyVector(vitesse), c, rayon));
     }
 
     public void translate(int w, int h){

@@ -40,18 +40,19 @@ public class Agents {
     public void addRandomAgents(int nbToAdd, int w, int h){
         Random r = new Random();
         Color c;
-        int x, y, radius;
-        int radiusMin = 10, radiusMax = 15;
+        int x, y,dx, dy, maxSpeed=(int)Agent.vitMax, radius =10;
+        //int radiusMin = 10, radiusMax = 15;
         Color[] colors = {
             Color.RED, Color.BLUE, Color.GREEN, Color.ORANGE,
             Color.CYAN, Color.MAGENTA, Color.YELLOW, Color.PINK,};
         for (int i = 0; i < nbToAdd; i++){
-            radius = r.nextInt(radiusMax-radiusMin) + radiusMin;
-            /* x = r.nextInt(w-radius) + radius; // Intervalle [radius; w-radius]
-            y = r.nextInt(h-radius) + radius; */
-            x = w/4; y = h/4;
+            //radius = r.nextInt(radiusMax-radiusMin) + radiusMin;
+            x = r.nextInt(w-radius*2) + radius; // Intervalle [radius; w-radius]
+            y = r.nextInt(h-radius*2) + radius;
+            dx =  r.nextInt(maxSpeed) - maxSpeed/2; //soustraction pour centrer l'intervalle en 0 
+            dy = r.nextInt(maxSpeed) - maxSpeed/2;
             c = colors[i%colors.length];
-            addAgent(new MyVector(x,y), radius, c);
+            addAgent(new MyVector(x,y),new MyVector(dx,dy), radius, c);
         }
     }
 
@@ -59,8 +60,13 @@ public class Agents {
         agentsList.add(new Agent(position, rayon, c));
         copy.add(new Agent(new MyVector(position), rayon, c)); //Copie de position necessaire
     }
+
+    public void addAgent(MyVector position, MyVector vitesse, int rayon, Color c){
+        agentsList.add(new Agent(position,vitesse, rayon, c));
+        copy.add(new Agent(new MyVector(position), new MyVector(vitesse), rayon, c)); //Copie de position necessaire
+    }
     
     public void update(int w, int h){
-        for (Agent a : agentsList) a.update(w, h);
+        for (Agent a : agentsList) a.update(w, h, agentsList);
     }
 }

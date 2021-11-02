@@ -30,19 +30,35 @@ public class AgentsSim extends GUISimulator implements Simulable {
         addGraphicalElement(r);
 
         //Partie perso
-        Oval o = new Oval(w/2, h/2, Color.yellow, Color.DARK_GRAY, 20);
-        addGraphicalElement(o);
+        // Oval o = new Oval(w/2, h/2, Color.yellow, Color.DARK_GRAY, 20);
+        // addGraphicalElement(o);
     }
 
     private void drawAgents(){
-        for(Agent a : agents.getAgents())
+        for(Agent a : agents.getAgents()){
+            // addGraphicalElement(
+            //     new Oval(
+            //         (int) a.getPosition().x, 
+            //         (int) a.getPosition().y, 
+            //         Color.white, 
+            //         Color.black, 
+            //         160));
+            // addGraphicalElement(
+            //     new Oval(
+            //         (int) a.getPosition().x, 
+            //         (int) a.getPosition().y, 
+            //         Color.white, 
+            //         Color.black, 
+            //         80));
             addGraphicalElement(
                 new Oval(
                     (int) a.getPosition().x, 
                     (int) a.getPosition().y, 
                     a.getColor(), 
                     a.getColor(), 
-                    a.getRayon()));
+                    a.getRayon()*2));  
+        }         
+            
     }
     @Override
     public void next(){
