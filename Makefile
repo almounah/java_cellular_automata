@@ -21,22 +21,13 @@
 #   -classpath : repertoire dans lequel sont cherches les .class deja compiles
 #   -sourcepath : repertoire dans lequel sont cherches les .java (dependances)
 
-all: testGUI testBallsSim testConway testImmigration testSchelling
+all: testGUI simulator
 
 testGUI:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/fr/tests/TestGUI.java
 
 simulator:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/fr/tests/TestSimulator.java
-
-testConway:
-	javac -d bin -classpath bin/gui.jar -sourcepath src src/fr/tests/TestConwaySimulator.java
-
-testImmigration:
-	javac -d bin -classpath bin/gui.jar -sourcepath src src/fr/tests/TestImmigrationSimulator.java
-
-testSchelling:
-	javac -d bin -classpath bin/gui.jar -sourcepath src src/fr/tests/TestSchellingSimulator.java
 
 # Execution:
 # on peut taper directement la ligne de commande :
@@ -50,13 +41,13 @@ exeBallsSims:
 	java -classpath bin:bin/gui.jar fr/tests/TestSimulator balls
 
 exeConway:
-	java -classpath bin:bin/gui.jar fr/tests/TestConwaySimulator
+	java -classpath bin:bin/gui.jar fr/tests/TestSimulator conway
 
 exeImmigration:
-	java -classpath bin:bin/gui.jar fr/tests/TestImmigrationSimulator
+	java -classpath bin:bin/gui.jar fr/tests/TestSimulator immigration
 
 exeSchelling:
-	java -classpath bin:bin/gui.jar fr/tests/TestSchellingSimulator
+	java -classpath bin:bin/gui.jar fr/tests/TestSimulator schelling
 
 exeAgentsSim:
 	java -classpath bin:bin/gui.jar fr/tests/TestSimulator boids
