@@ -15,21 +15,21 @@ public class TestSimulator {
         if(args[0].equals("boids")) gui.setSimulable(new AgentsSim(w, h, nbAgents, gui));
         if(args[0].equals("balls")) gui.setSimulable(new BallsSimulator(w, h, nbAgents, gui));
         if(args[0].equals("conway")) {
-            int number_of_square = 20, init_alive = 50;
-            gui.setSimulable(new ConwaySimulator(w/number_of_square, number_of_square, init_alive));
+            int size_of_square = 20, number_of_square = 20, init_alive = 50;
+            gui.setSimulable(new ConwaySimulator(size_of_square, number_of_square, init_alive, gui));
         }
 
         if (args[0].equals("immigration")) {
-            int number_of_square = 20, size_of_square = 20; 
+            int size_of_square = 25, number_of_square = 15; 
             Color[] list_color = new Color[]{Color.WHITE, Color.LIGHT_GRAY, Color.GRAY, Color.BLACK};
-            gui.setSimulable(new ImmigrationSimulator(size_of_square, number_of_square, list_color));
+            gui.setSimulable(new ImmigrationSimulator(size_of_square, number_of_square, list_color, gui));
 
         }
 
         if (args[0].equals("schelling")) {
-            int number_of_square = 20, size_of_square = 20, init_alive=2000, seuil = 3; 
+            int size_of_square = 25, number_of_square=15, init_alive=2000, seuil = 3; 
             Color[] list_color = new Color[]{Color.WHITE, Color.RED, Color.BLUE, Color.GREEN};
-            gui.setSimulable(new SchellingSimulator(size_of_square, number_of_square, list_color, 3, init_alive));
+            gui.setSimulable(new SchellingSimulator(size_of_square, number_of_square, list_color, seuil, init_alive, gui));
         }
     }
 }
