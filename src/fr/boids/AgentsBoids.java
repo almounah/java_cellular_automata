@@ -2,32 +2,32 @@ package fr.boids;
 
 import java.util.Iterator;
 import java.util.LinkedList;
-import fr.boids.Agent;
+import fr.boids.AgentBoids;
 import fr.glob.MyVector;
 import java.util.Random;
 import java.util.Vector;
 import java.awt.Color;
 
-public class Agents {
-    private LinkedList<Agent> agentsList;
-    private LinkedList<Agent> copy;
+public class AgentsBoids {
+    private LinkedList<AgentBoids> agentsList;
+    private LinkedList<AgentBoids> copy;
 
-    public Agents(int nbToAdd, int w, int h){
-        agentsList = new LinkedList<Agent>();
-        copy = new LinkedList<Agent>();
+    public AgentsBoids(int nbToAdd, int w, int h){
+        agentsList = new LinkedList<AgentBoids>();
+        copy = new LinkedList<AgentBoids>();
         addRandomAgents(nbToAdd, w, h);
     }
 
-    public LinkedList<Agent> getAgents(){
+    public LinkedList<AgentBoids> getAgents(){
         return this.agentsList;
     }
 
     public void reInit(){
         if(agentsList.size() != copy.size()) 
             throw new RuntimeException("reInit : Listes de taille différentes!");
-        Iterator<Agent> itL = agentsList.iterator();
-        Iterator<Agent> itC = copy.iterator();
-        Agent a,c;
+        Iterator<AgentBoids> itL = agentsList.iterator();
+        Iterator<AgentBoids> itC = copy.iterator();
+        AgentBoids a,c;
         while(itL.hasNext() && itC.hasNext()){
             a = itL.next();
             c = itC.next();
@@ -40,7 +40,7 @@ public class Agents {
     public void addRandomAgents(int nbToAdd, int w, int h){
         Random r = new Random();
         Color c;
-        int x, y,dx, dy, maxSpeed=(int)Agent.vitMax, radius =10;
+        int x, y,dx, dy, maxSpeed=(int)AgentBoids.vitMax, radius =10;
         //int radiusMin = 10, radiusMax = 15;
         Color[] colors = {
             Color.RED, Color.BLUE, Color.GREEN, Color.ORANGE,
@@ -57,16 +57,16 @@ public class Agents {
     }
 
     public void addAgent(MyVector position, int rayon, Color c){
-        agentsList.add(new Agent(position, rayon, c));
-        copy.add(new Agent(new MyVector(position), rayon, c)); //Copie de position necessaire
+        agentsList.add(new AgentBoids(position, rayon, c));
+        copy.add(new AgentBoids(new MyVector(position), rayon, c)); //Copie de position necessaire
     }
 
     public void addAgent(MyVector position, MyVector vitesse, int rayon, Color c){
-        agentsList.add(new Agent(position,vitesse, rayon, c));
-        copy.add(new Agent(new MyVector(position), new MyVector(vitesse), rayon, c)); //Copie de position necessaire
+        agentsList.add(new AgentBoids(position,vitesse, rayon, c));
+        copy.add(new AgentBoids(new MyVector(position), new MyVector(vitesse), rayon, c)); //Copie de position necessaire
     }
     
     public void update(int w, int h){
-        for (Agent a : agentsList) a.update(w, h, agentsList);
+        for (AgentBoids a : agentsList) a.update(w, h, agentsList);
     }
 }

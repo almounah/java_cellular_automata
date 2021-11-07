@@ -7,50 +7,33 @@ import gui.Rectangle;
 
 import java.awt.Color;
 
-public class AgentsSim extends GUISimulator implements Simulable {
-    private Agents agents;
+import fr.glob.Simulateur;
 
-    public AgentsSim(int width, int height, Color bgColor, int nbAgents) {
-        super(width, height, bgColor);
-        this.agents = new Agents(nbAgents, width, height);
-        setSimulable(this);
-    }
+public class AgentsSim extends Simulateur {
+    private AgentsBoids agents;
 
-    //Dessine les bords du "panel"
-    private void drawEdge(Color c){
-        int w = getPanelWidth();
-        int h = getPanelHeight();
-        Rectangle r = new Rectangle(w/2,0, c, c, w, 1);
-        addGraphicalElement(r);
-        r = new Rectangle(0,h/2, c, c, 1, h);
-        addGraphicalElement(r);
-        r = new Rectangle(w/2,h-1, c, c, w, 1);
-        addGraphicalElement(r);
-        r = new Rectangle(w-1,h/2, c, c, 1, h);
-        addGraphicalElement(r);
-
-        //Partie perso
-        // Oval o = new Oval(w/2, h/2, Color.yellow, Color.DARK_GRAY, 20);
-        // addGraphicalElement(o);
+    public AgentsSim(int width, int height, int nbAgents, GUISimulator win) {
+        super(width, height, win);
+        this.agents = new AgentsBoids(nbAgents, width, height);
     }
 
     private void drawAgents(){
-        for(Agent a : agents.getAgents()){
-            // addGraphicalElement(
+        for(AgentBoids a : agents.getAgents()){
+            // win.addGraphicalElement(
             //     new Oval(
             //         (int) a.getPosition().x, 
             //         (int) a.getPosition().y, 
             //         Color.white, 
             //         Color.black, 
             //         160));
-            // addGraphicalElement(
+            // win.addGraphicalElement(
             //     new Oval(
             //         (int) a.getPosition().x, 
             //         (int) a.getPosition().y, 
             //         Color.white, 
             //         Color.black, 
             //         80));
-            addGraphicalElement(
+            win.addGraphicalElement(
                 new Oval(
                     (int) a.getPosition().x, 
                     (int) a.getPosition().y, 
@@ -62,8 +45,8 @@ public class AgentsSim extends GUISimulator implements Simulable {
     }
     @Override
     public void next(){
-        agents.update(getPanelWidth(), getPanelHeight());
-        reset();
+        agents.update(w, h);
+        win.reset();
         drawEdge(Color.white);
         drawAgents();
     }
@@ -71,7 +54,7 @@ public class AgentsSim extends GUISimulator implements Simulable {
     @Override
     public void restart(){
         agents.reInit();
-        reset();
+        win.reset();
         drawEdge(Color.white);
         drawAgents();
     }

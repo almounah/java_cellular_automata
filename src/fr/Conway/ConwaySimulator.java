@@ -15,12 +15,20 @@ public class ConwaySimulator extends GUISimulator implements Simulable {
     private ConwayGrid grid;
 
     public ConwaySimulator(int size_of_square, int rows, int init_alive) { 
-
-        this(size_of_square, rows, init_alive, new ConwayGrid(rows, rows, init_alive), new Color[]{Color.WHITE, Color.BLACK}); // we chose a squared grid always 
+        this(
+            size_of_square, 
+            rows, init_alive, 
+            new ConwayGrid(rows, rows, init_alive), 
+            new Color[]{Color.WHITE, Color.BLACK}); // we chose a squared grid always 
     }
 
 
-    protected ConwaySimulator(int size_of_square, int rows, int init_alive, ConwayGrid grid, Color list_Colors[]) {
+    protected ConwaySimulator(
+            int size_of_square, 
+            int rows, 
+            int init_alive, 
+            ConwayGrid grid, 
+            Color list_Colors[]) {
         super(size_of_square*rows, size_of_square*rows, Color.BLACK);
         this.size_of_square = size_of_square;
         this.rows = rows;

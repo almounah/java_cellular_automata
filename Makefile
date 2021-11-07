@@ -26,8 +26,8 @@ all: testGUI testBallsSim testConway testImmigration testSchelling
 testGUI:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/fr/tests/TestGUI.java
 
-testBallsSim:
-	javac -d bin -classpath bin/gui.jar -sourcepath src src/fr/tests/TestBallsSimulator.java
+simulator:
+	javac -d bin -classpath bin/gui.jar -sourcepath src src/fr/tests/TestSimulator.java
 
 testConway:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/fr/tests/TestConwaySimulator.java
@@ -38,9 +38,6 @@ testImmigration:
 testSchelling:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/fr/tests/TestSchellingSimulator.java
 
-testAgentsSim:
-	javac -d bin -classpath bin/gui.jar -sourcepath src src/fr/tests/TestAgentsSim.java
-
 # Execution:
 # on peut taper directement la ligne de commande :
 #   > java -classpath bin TestGUI
@@ -50,7 +47,7 @@ exeGUI:
 	java -classpath bin:bin/gui.jar fr/tests/TestGUI
 
 exeBallsSims:
-	java -classpath bin:bin/gui.jar fr/tests/TestBallsSimulator
+	java -classpath bin:bin/gui.jar fr/tests/TestSimulator balls
 
 exeConway:
 	java -classpath bin:bin/gui.jar fr/tests/TestConwaySimulator
@@ -62,7 +59,7 @@ exeSchelling:
 	java -classpath bin:bin/gui.jar fr/tests/TestSchellingSimulator
 
 exeAgentsSim:
-	java -classpath bin:bin/gui.jar fr/tests/TestAgentsSim
+	java -classpath bin:bin/gui.jar fr/tests/TestSimulator boids
 
 clean:
 	rm -rf bin/fr

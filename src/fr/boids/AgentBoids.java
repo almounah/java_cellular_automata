@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class Agent {
+public class AgentBoids {
 
     private MyVector position;
     private MyVector vitesse;
@@ -13,8 +13,8 @@ public class Agent {
     private int rayon;
     private double masse = 30.0;
     private Color color;
-    public double portee;
-    public double espacePerso;
+    public double portee; //rayon
+    public double espacePerso; // rayon
 
     static public double vitMax = 5.0;
     static public double accelMax = 15.0; // Méga camion de 2 tonnes ou F1?
@@ -22,7 +22,7 @@ public class Agent {
 
     //Constructeur
 
-    public Agent(MyVector position, int rayon, Color c) {
+    public AgentBoids(MyVector position, int rayon, Color c) {
         this.position = position;
         this.vitesse = new MyVector(0,0);
         this.acceleration = new MyVector(0,0);
@@ -32,7 +32,7 @@ public class Agent {
         this.color = c;
     }
 
-    public Agent(MyVector position, MyVector vitesse, int rayon, Color c) {
+    public AgentBoids(MyVector position, MyVector vitesse, int rayon, Color c) {
         this.position = position;
         this.vitesse = vitesse;
         this.acceleration = new MyVector(0,0);
@@ -69,15 +69,84 @@ public class Agent {
         appliquerForce(gravitation);
     }
 
-    private void mouvementBoids(LinkedList<Agent> agents){
+    private void applyCohesion(LinkedList<AgentBoids> agents){
+        MyVector cohesion = new MyVector(0,0);
+        int nbVoisins = 0;
+        Iterator<AgentBoids> it = agents.iterator();
+        while(it.hasNext()){
+            AgentBoids v = it.next();
+            double dst = position.dst(v.getPosition());
+            if(dst > 0 && v != this && dst<portee){
+                nbVoisins++;
+                cohesion.add(v.getPosition());
+            }
+        }
+        if(nbVoisins > 0){
+            cohesion.div(nbVoisins);
+            rejoindre(cohesion);
+        }
+    }
+
+    private void applyAlignement(LinkedList<AgentBoids> agents){
+        MyVector alignement = new MyVector(0,0);
+        int nbVoisins = 0;
+        Iterator<AgentBoids> it = agents.iterator();
+        while(it.hasNext()){
+            AgentBoids v = it.next();
+            double dst = position.dst(v.getPosition());
+            if(dst > 0 && v != this && dst<portee){
+                nbVoisins++;
+                alignement.add(v.getVitesse());
+            }
+        }
+        if(nbVoisins > 0){
+            alignement.div(nbVoisins);
+            alignement.normalize();
+            alignement.mult(vitMax);
+            MyVector steer = MyVector.sub(alignement, vitesse); //'steer force' de Reynolds
+            appliquerForce(steer);
+        }
+    }
+
+    private void applySeparation(LinkedList<AgentBoids> agents){
+        int nbConnards = 0;
+        MyVector separation = new MyVector(0,0);
+        Iterator<AgentBoids> it = agents.iterator();
+        while(it.hasNext()){
+            AgentBoids v = it.next();
+            double dst = position.dst(v.getPosition());
+            if(dst > 0 && v != this && dst<espacePerso){
+                MyVector diff = MyVector.sub(position,v.getPosition());
+                diff.normalize();
+                diff.div(dst);
+                separation.add(diff);
+                nbConnards++;
+            }
+        }
+        if(nbConnards > 0){
+            separation.div(nbConnards);
+            separation.normalize();
+            separation.mult(vitMax);
+            MyVector steer = MyVector.sub(separation, vitesse);
+            appliquerForce(steer);
+        }
+    }
+
+    private void mouvementBoidsUnits(LinkedList<AgentBoids> agents){
+        //applyCohesion(agents);
+        applyAlignement(agents);
+        applySeparation(agents);
+    }
+
+    private void mouvementBoids(LinkedList<AgentBoids> agents){
         int nbVoisins = 0;
         int nbConnards = 0;
         MyVector cohesion = new MyVector(0,0);
         MyVector alignement = new MyVector(0,0);
         MyVector separation = new MyVector(0,0);
-        Iterator<Agent> it = agents.iterator();
+        Iterator<AgentBoids> it = agents.iterator();
         while(it.hasNext()){
-            Agent v = it.next();
+            AgentBoids v = it.next();
             double dst = position.dst(v.getPosition());
             if(dst > 0 && v != this && dst<portee){
                 nbVoisins++;
@@ -106,7 +175,7 @@ public class Agent {
             separation.div(nbConnards);
             separation.normalize();
             separation.mult(vitMax);
-            MyVector steer = MyVector.sub(separation, vitesse); //'steer force' de Reynolds
+            MyVector steer = MyVector.sub(separation, vitesse);
             appliquerForce(steer);
         }
         
@@ -148,12 +217,13 @@ public class Agent {
         if(y>h) position.y = h-1;
     }
 
-    public void update(int w, int h, LinkedList<Agent> agents){
+    public void update(int w, int h, LinkedList<AgentBoids> agents){
         //System.out.println("==========");
         //System.out.println("Avant -> "+ this.toString());
 
         checkBounds(w,h,50);
-        mouvementBoids(agents);
+        //mouvementBoids(agents);
+        mouvementBoidsUnits(agents);
         //rejoindre(new MyVector(w/2, h/2));
         //graviterAutour(new MyVector(w/2, h/2), 300);
         
