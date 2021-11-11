@@ -3,7 +3,7 @@ package fr.tests;
 import fr.balls.*;
 
 
-public class TestBalls {
+public class TestBallsText {
     public static void main(String[] args) {
         Balls b = new Balls(10, 100, 100);
         System.out.println("Voici mes balls -> " + b);

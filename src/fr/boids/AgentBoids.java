@@ -17,7 +17,8 @@ public class AgentBoids {
     public double espacePerso; // rayon
 
     static public double vitMax = 5.0;
-    static public double accelMax = 15.0; // Méga camion de 2 tonnes ou F1?
+    static public double vitRepultionMax = vitMax * 1.3;
+    static public double accelMax = vitMax/2; // Méga camion de 2 tonnes ou F1?
     
 
     //Constructeur
@@ -27,7 +28,7 @@ public class AgentBoids {
         this.vitesse = new MyVector(0,0);
         this.acceleration = new MyVector(0,0);
         this.rayon = rayon;
-        portee = rayon+70.0;
+        portee = rayon*8;
         espacePerso = portee / 2;
         this.color = c;
     }
@@ -126,14 +127,14 @@ public class AgentBoids {
         if(nbConnards > 0){
             separation.div(nbConnards);
             separation.normalize();
-            separation.mult(vitMax);
+            separation.mult(vitRepultionMax);
             MyVector steer = MyVector.sub(separation, vitesse);
             appliquerForce(steer);
         }
     }
 
     private void mouvementBoidsUnits(LinkedList<AgentBoids> agents){
-        //applyCohesion(agents);
+        applyCohesion(agents);
         applyAlignement(agents);
         applySeparation(agents);
     }
@@ -174,7 +175,7 @@ public class AgentBoids {
         if(nbConnards > 0){
             separation.div(nbConnards);
             separation.normalize();
-            separation.mult(vitMax);
+            separation.mult(vitRepultionMax);
             MyVector steer = MyVector.sub(separation, vitesse);
             appliquerForce(steer);
         }
@@ -183,32 +184,22 @@ public class AgentBoids {
 
     //Met à jour l'accel en fct de la proximité au bords
     public void checkBounds(int w, int h, int limiteBord){
-        int forceBord = 0;
         int x = (int)position.x, y = (int)position.y;
         if(x < rayon+limiteBord){
             //System.out.println("GAUCHE");
-            forceBord = limiteBord - (x -rayon);
-            // plus on est proche, plus on est poussé fort
-            appliquerForce(new MyVector(forceBord, 0));
-            forceBord = 0;
+            appliquerForce(new MyVector(vitMax, 0));
         } 
         if(x > w-limiteBord-rayon){
             //System.out.println("DROITE");
-            forceBord = x+rayon - (w-limiteBord);
-            appliquerForce(new MyVector(-forceBord, 0));
-            forceBord = 0; 
+            appliquerForce(new MyVector(-vitMax, 0));
         }
         if(y < rayon+limiteBord){
             //System.out.println("HAUT");
-            forceBord = limiteBord - (y -rayon);
-            appliquerForce(new MyVector(0, forceBord));
-            forceBord = 0;
+            appliquerForce(new MyVector(0, vitMax));
         }
         if(y > h-limiteBord-rayon){
             //System.out.println("BAS");
-            forceBord = y+rayon - (h-limiteBord);
-            appliquerForce(new MyVector(0,-forceBord));
-            forceBord = 0;
+            appliquerForce(new MyVector(0,-vitMax));
         }
 
         if(x<0) position.x = 0;
@@ -221,9 +212,9 @@ public class AgentBoids {
         //System.out.println("==========");
         //System.out.println("Avant -> "+ this.toString());
 
-        checkBounds(w,h,50);
-        //mouvementBoids(agents);
-        mouvementBoidsUnits(agents);
+        checkBounds(w,h, (w+h)/20); //limiteBord = moyenne/10
+        mouvementBoids(agents);
+        //mouvementBoidsUnits(agents);
         //rejoindre(new MyVector(w/2, h/2));
         //graviterAutour(new MyVector(w/2, h/2), 300);
         

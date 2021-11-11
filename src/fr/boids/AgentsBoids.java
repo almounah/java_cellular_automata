@@ -40,7 +40,7 @@ public class AgentsBoids {
     public void addRandomAgents(int nbToAdd, int w, int h){
         Random r = new Random();
         Color c;
-        int x, y,dx, dy, maxSpeed=(int)AgentBoids.vitMax, radius =10;
+        int x, y,dx, dy, maxSpeed=(int)AgentBoids.vitMax, radius = 5;
         //int radiusMin = 10, radiusMax = 15;
         Color[] colors = {
             Color.RED, Color.BLUE, Color.GREEN, Color.ORANGE,
