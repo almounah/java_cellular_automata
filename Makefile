@@ -23,6 +23,10 @@
 
 all: testGUI simulator
 
+testText:
+	javac -d bin -classpath bin/gui.jar -sourcepath src src/fr/tests/TestText.java
+	java -classpath bin:bin/gui.jar fr/tests/TestText events
+
 testGUI:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/fr/tests/TestGUI.java
 
