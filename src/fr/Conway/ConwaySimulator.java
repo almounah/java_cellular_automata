@@ -13,7 +13,7 @@ public class ConwaySimulator extends Simulateur {
     public int init_alive;
     public int half_square; 
     private Color list_Colors[]; 
-    private ConwayGrid grid;
+    private ConwayGrid grid; 
 
     public ConwaySimulator(int size_of_square, int rows, int init_alive, GUISimulator win) { 
         this(
@@ -40,6 +40,7 @@ public class ConwaySimulator extends Simulateur {
         this.list_Colors = list_Colors;
         this.win = win;
         half_square = size_of_square/2;
+        this.grid.initialize();
     }
 
     public void draw_grid_line() {
@@ -64,41 +65,36 @@ public class ConwaySimulator extends Simulateur {
         win.addGraphicalElement(r);
     }
 
-    public void draw_grid(HashMap<String,ArrayList<Integer>> map)  {
-        ArrayList<Integer> list_x = map.get("x_coord");
-        ArrayList<Integer> list_y = map.get("y_coord");
-        for (int i = 0; i < list_x.size(); i++) {
-            int x = list_x.get(i);
-            int y = list_y.get(i);
-            draw_cube(x*size_of_square, y*size_of_square, list_Colors[grid.grid[y][x]]); 
-        } 
-    }
-
-    public void draw_grid_init() {
+    public void draw_grid()  {
         for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < rows; j++) {  
-                draw_cube(i*size_of_square, j*size_of_square, list_Colors[grid.grid[j][i]]); 
+            for (int j = 0; j < rows; j++) {
+                draw_cube(j*size_of_square, i*size_of_square, list_Colors[grid.grid[j][i]]); 
             }
         }
     }
+
 
     @Override
     public String toString() {
         return ("The board of size " + size_of_square*rows);
     }
+
     @Override
     public void next() {
         HashMap<String,ArrayList<Integer>> map = this.grid.get_to_change_list();
+        win.reset();
         this.grid.update_grid(map);
-        this.draw_grid(map);
+        this.draw_grid();
         this.draw_grid_line();
+
     }
 
     @Override
     public void restart() {
-        this.grid.initialize();
+        this.grid.reInit();
+        win.reset();
+        this.draw_grid();
         this.draw_grid_line();
-        this.draw_grid_init();
     }
 }
 

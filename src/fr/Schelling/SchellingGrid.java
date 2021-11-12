@@ -110,6 +110,7 @@ public class SchellingGrid extends ConwayGrid {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < column; j++) {
                 grid[j][i] = 0;
+                grid_copy[j][i] = 0;
             }    
         }
 
@@ -119,10 +120,18 @@ public class SchellingGrid extends ConwayGrid {
             x = ThreadLocalRandom.current().nextInt(0, rows);
             y = ThreadLocalRandom.current().nextInt(0, column);
             grid[y][x] = ThreadLocalRandom.current().nextInt(0, nombre_couleur);
+            grid_copy[y][x] = grid[y][x];
         }
 
         // We initialize the empty list
         initialize_vacante();
     }
-
+    
+    @Override
+    public void reInit() {
+        super.reInit();
+        list_empty_x = new ArrayList<Integer>(); 
+        list_empty_y = new ArrayList<Integer>(); 
+        initialize_vacante();
+    }
 }
