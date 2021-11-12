@@ -11,7 +11,7 @@ import java.awt.Color;
 public class TestSimulator {
     public static void main(String[] args) {
 
-        int w=600, h=400, nbAgents = 10;
+        int w=700, h=500, nbAgents = 20;
         GUISimulator gui = new GUISimulator(w, h, Color.BLACK);
 
         if(args[0].equals("boids")){
@@ -29,7 +29,7 @@ public class TestSimulator {
         }
 
         if (args[0].equals("immigration")) {
-            int size_of_square = 25, number_of_square = 15; 
+            int size_of_square = 15, number_of_square = 40; 
             Color[] list_color = new Color[]{Color.WHITE, Color.LIGHT_GRAY, Color.GRAY, Color.BLACK};
             gui.setSimulable(new ImmigrationSimulator(size_of_square, number_of_square, list_color, gui));
 

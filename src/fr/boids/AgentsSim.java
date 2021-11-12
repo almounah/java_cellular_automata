@@ -8,6 +8,8 @@ import gui.Rectangle;
 import java.awt.Color;
 
 import fr.glob.Simulateur;
+import fr.glob.event.*;
+import fr.glob.event.eventBoids.*;
 
 public class AgentsSim extends Simulateur {
     private AgentsBoids agents;
@@ -15,6 +17,8 @@ public class AgentsSim extends Simulateur {
     public AgentsSim(int width, int height, int nbAgents, GUISimulator win) {
         super(width, height, win);
         this.agents = new AgentsBoids(nbAgents, width, height);
+        em.addEvent(new EventMoveBoids(em, this.agents));
+        em.setInitialStatus();
     }
 
     private void drawAgents(){
@@ -45,7 +49,7 @@ public class AgentsSim extends Simulateur {
     }
     @Override
     public void next(){
-        agents.update(w, h);
+        em.next();
         win.reset();
         drawEdge(Color.white);
         drawAgents();
@@ -53,6 +57,7 @@ public class AgentsSim extends Simulateur {
 
     @Override
     public void restart(){
+        em.restart();
         agents.reInit();
         win.reset();
         drawEdge(Color.white);

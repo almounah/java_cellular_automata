@@ -17,7 +17,7 @@ public class BallsSimulator extends Simulateur{
     public BallsSimulator(int width, int height, int nbBalls, GUISimulator win) {
         super(width, height, win);
         this.balls = new Balls(nbBalls, width, height, false);
-        em.addEvent(new EventMoveBalls(this.em, balls));
+        em.addEvent(new EventMoveBalls(this.em, this.balls));
         em.setInitialStatus();
     }
 

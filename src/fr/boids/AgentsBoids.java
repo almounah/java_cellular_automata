@@ -11,15 +11,23 @@ import java.awt.Color;
 public class AgentsBoids {
     private LinkedList<AgentBoids> agentsList;
     private LinkedList<AgentBoids> copy;
+    private int w,h;
 
     public AgentsBoids(int nbToAdd, int w, int h){
         agentsList = new LinkedList<AgentBoids>();
         copy = new LinkedList<AgentBoids>();
-        addRandomAgents(nbToAdd, w, h);
+        this.w = w; this.h = h;
+        addRandomAgents(nbToAdd);
     }
 
     public LinkedList<AgentBoids> getAgents(){
         return this.agentsList;
+    }
+    public int getWidth() {
+        return this.w;
+    }
+    public int getHeight() {
+        return this.h;
     }
 
     public void reInit(){
@@ -37,7 +45,7 @@ public class AgentsBoids {
         }
     }
 
-    public void addRandomAgents(int nbToAdd, int w, int h){
+    public void addRandomAgents(int nbToAdd){
         Random r = new Random();
         Color c;
         int x, y,dx, dy, maxSpeed=(int)AgentBoids.vitMax, radius = 5;
@@ -66,7 +74,7 @@ public class AgentsBoids {
         copy.add(new AgentBoids(new MyVector(position), new MyVector(vitesse), rayon, c)); //Copie de position necessaire
     }
     
-    public void update(int w, int h){
+    public void update(){
         for (AgentBoids a : agentsList) a.update(w, h, agentsList);
     }
 }
