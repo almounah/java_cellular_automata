@@ -15,12 +15,14 @@ public class ConwayGrid {
     public int rows;
     public int init_alive;
     public int grid[][];
+    public int grid_copy[][];
 
     public ConwayGrid(int column, int rows, int init_alive) {
         this.column = column;
         this.rows = rows;
         this.init_alive = init_alive;
         this.grid = new int[column][rows];
+        this.grid_copy = new int[column][rows];
     }
 
     public void initialize() {
@@ -28,6 +30,7 @@ public class ConwayGrid {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < column; j++) {
                 grid[j][i] = 0;
+                grid_copy[j][i] = 0;
             }    
         }
 
@@ -37,6 +40,16 @@ public class ConwayGrid {
             x = ThreadLocalRandom.current().nextInt(0, rows);
             y = ThreadLocalRandom.current().nextInt(0, column);
             grid[y][x] = 1;
+            grid_copy[y][x] = 1;
+        }
+    }
+
+    public void reInit() {
+        
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < column; j++) {
+                grid[j][i] = grid_copy[j][i];
+            }
         }
     }
 
