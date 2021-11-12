@@ -32,7 +32,7 @@ public class BallsSimulator extends Simulateur{
 
     @Override
     public void next(){
-        balls.translate(w, h);
+        balls.update();
         win.reset();
         drawEdge(Color.white);
         drawBalls();

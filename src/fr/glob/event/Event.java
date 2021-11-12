@@ -4,13 +4,19 @@ import java.lang.Comparable;
 
 public abstract class Event implements Comparable<Event>{
     private long dateToPlay;
+    private EventManager em;
 
-    public Event(long dateToPlay) {
+    public Event(long dateToPlay, EventManager eventManager) {
         this.dateToPlay = dateToPlay;
+        this.em = eventManager;
     }
 
     public long getDateToPlay() {
         return this.dateToPlay;
+    }
+
+    public EventManager getEventManager() {
+        return this.em;
     }
 
     @Override
