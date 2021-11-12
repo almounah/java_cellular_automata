@@ -57,7 +57,7 @@ public class ConwaySimulator extends Simulateur {
     public void draw_cube(int x, int y, Color c) {
         /*x and y are the coordinate of the top left*/    
         Rectangle r;
-        int cube_size = size_of_square-5;
+        int cube_size = size_of_square-4;
         int x_center = x + half_square;
         int y_center = y + half_square;
         r = new Rectangle(x_center, y_center, c, c, cube_size, cube_size);
@@ -91,7 +91,7 @@ public class ConwaySimulator extends Simulateur {
         HashMap<String,ArrayList<Integer>> map = this.grid.get_to_change_list();
         this.grid.update_grid(map);
         this.draw_grid(map);
-
+        this.draw_grid_line();
     }
 
     @Override

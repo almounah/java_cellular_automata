@@ -1,9 +1,9 @@
 package fr.glob.event;
 
-public class EventTest extends Event {
+public class EventMessage extends Event {
     private int value;
 
-    public EventTest(long dateToPlay, EventManager eventManager, int value) {
+    public EventMessage(long dateToPlay, EventManager eventManager, int value) {
         super(dateToPlay, eventManager);
         this.value = value;
     }

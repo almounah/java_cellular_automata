@@ -23,10 +23,10 @@ public class TestText {
     private static void testEvents(){
         System.out.println("===== Testing Events =====");
         EventManager em = new EventManager();
-        em.addEvent(new EventTest(5, em, 55));
-        em.addEvent(new EventTest(3, em, 33));
-        em.addEvent(new EventTest(4, em, 44));
-        em.addEvent(new EventTest(4, em, 444));
+        em.addEvent(new EventMessage(5, em, 55));
+        em.addEvent(new EventMessage(3, em, 33));
+        em.addEvent(new EventMessage(4, em, 44));
+        em.addEvent(new EventMessage(4, em, 444));
         em.setInitialStatus();
         while(em.isMoreEvent()){
             em.next();

@@ -35,7 +35,7 @@ public class EventManager {
 
     public void next(){
         currentDate++;
-        System.out.println("New date! -> "+currentDate);
+        //System.out.println("New date! -> "+currentDate);
         while(!isFinished()){
             Event e = eventQueue.poll();
             e.execute();

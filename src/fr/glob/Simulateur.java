@@ -6,14 +6,18 @@ import gui.Rectangle;
 
 import java.awt.Color;
 
+import fr.glob.event.EventManager;
+
 public abstract class Simulateur implements Simulable{
     protected int w,h;
     protected GUISimulator win;
+    protected EventManager em;
 
     public Simulateur(int w, int h, GUISimulator win) {
         this.w = w;
         this.h = h;
         this.win = win;
+        this.em = new EventManager();
     }
 
 

@@ -10,10 +10,19 @@ import java.awt.Color;
 
 public class TestSimulator {
     public static void main(String[] args) {
-        int w=800, h=800, nbAgents = 20;
+
+        int w=600, h=400, nbAgents = 10;
         GUISimulator gui = new GUISimulator(w, h, Color.BLACK);
-        if(args[0].equals("boids")) gui.setSimulable(new AgentsSim(w, h, nbAgents, gui));
-        if(args[0].equals("balls")) gui.setSimulable(new BallsSimulator(w, h, nbAgents, gui));
+
+        if(args[0].equals("boids")){
+            gui.setSimulable(new AgentsSim(w, h, nbAgents, gui));
+        } 
+
+        if(args[0].equals("balls")){
+            boolean useBlueRedBalls = false; //Démonstration de l'utilisation des Events (Rouges->rapides, Bleues ->lentes)
+            gui.setSimulable(new BallsSimulator(w, h, nbAgents, gui, useBlueRedBalls));
+        } 
+
         if(args[0].equals("conway")) {
             int size_of_square = 20, number_of_square = 20, init_alive = 50;
             gui.setSimulable(new ConwaySimulator(size_of_square, number_of_square, init_alive, gui));

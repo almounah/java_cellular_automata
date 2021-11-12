@@ -11,11 +11,13 @@ public class Balls {
     private ArrayList<Ball> ballsCopy;
     private int w,h;
 
-    public Balls(int nbToAdd, int w, int h){
+    public Balls(int nbToAdd, int w, int h, boolean useRedBlueBalls){
         ballsList = new ArrayList<Ball>();
         ballsCopy = new ArrayList<Ball>();
         this.w = w; this.h = h;
-        addRandomBalls(nbToAdd);
+        if (useRedBlueBalls) addBlueRedBalls(nbToAdd);
+        else addRandomBalls(nbToAdd);
+        
     }
 
     public ArrayList<Ball> getballsList(){
