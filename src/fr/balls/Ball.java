@@ -18,7 +18,7 @@ public class Ball {
         this.rayon = rayon;
     }
     
-    public void translate(int width, int height){
+    public void update(int width, int height){
         position.add(vitesse);
         if ((position.x > width-rayon) || (position.x < rayon)) {
             if (position.x > width-rayon) position.x = width-rayon;

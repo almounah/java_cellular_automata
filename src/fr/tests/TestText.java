@@ -11,7 +11,7 @@ public class TestText {
         System.out.println("Voici mes balls -> " + b);
 
         System.out.println("Mooving balls ...");
-        b.translate(2, 10);
+        b.update();
         System.out.println("Mooved balls là -> " + b);
         System.out.println("Copyed balls là -> " + b.toStringCP());
 
@@ -21,16 +21,22 @@ public class TestText {
     }
 
     private static void testEvents(){
-        System.out.println("Testing Events...");
+        System.out.println("===== Testing Events =====");
         EventManager em = new EventManager();
-        em.addEvent(new EventTest(5, 55));
-        em.addEvent(new EventTest(3, 33));
-        em.addEvent(new EventTest(4, 44));
-        em.addEvent(new EventTest(4, 444));
-        while(em.isEvent()){
+        em.addEvent(new EventTest(5, em, 55));
+        em.addEvent(new EventTest(3, em, 33));
+        em.addEvent(new EventTest(4, em, 44));
+        em.addEvent(new EventTest(4, em, 444));
+        em.setInitialStatus();
+        while(em.isMoreEvent()){
             em.next();
         }
-        System.out.println("No more event\nDone testing Events!");
+        System.out.println("===== No more event | Restarting =====");
+        em.restart();
+        while(em.isMoreEvent()){
+            em.next();
+        }
+        System.out.println("===== Done testing ====");
     }
     public static void main(String[] args) {
         if(args.length == 0){ 

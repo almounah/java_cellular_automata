@@ -9,11 +9,13 @@ import fr.glob.MyVector;
 public class Balls {
     private ArrayList<Ball> ballsList;
     private ArrayList<Ball> ballsCopy;
+    private int w,h;
 
     public Balls(int nbToAdd, int w, int h){
         ballsList = new ArrayList<Ball>();
         ballsCopy = new ArrayList<Ball>();
-        addRandomBalls(nbToAdd, w, h);
+        this.w = w; this.h = h;
+        addRandomBalls(nbToAdd);
     }
 
     public ArrayList<Ball> getballsList(){
@@ -37,7 +39,28 @@ public class Balls {
         }
     }
 
-    public void addRandomBalls(int nbToAdd, int w, int h){
+    public void addBlueRedBalls(int nbToAdd){
+        Random r = new Random();
+        int x, y, dx, dy, radius;
+        int maxSpeed = (h+w)/100; // moyenne/50
+        int radiusRed = 20, radiusBlue = 40;
+        Color c;
+        for (int i = 0; i < nbToAdd; i++){
+            boolean isRed = i%2==0;
+            radius = isRed ? radiusRed : radiusBlue;
+            x = r.nextInt(w-radius) + radius; // Intervalle [radius; w-radius]
+            y = r.nextInt(h-radius) + radius;
+            MyVector pos = new MyVector(x, y);
+            dx =  r.nextInt(maxSpeed) - maxSpeed/2; //soustraction pour centrer l'intervalle en 0 
+            dy = r.nextInt(maxSpeed) - maxSpeed/2;
+            MyVector vit = new MyVector(dx, dy);
+            vit.normalize(); vit.mult((double) maxSpeed);
+            c = isRed ? Color.RED : Color.BLUE;
+            addBall(pos, vit, c, radius);
+        }
+    }
+
+    public void addRandomBalls(int nbToAdd){
         Random r = new Random();
         int x, y, dx, dy, radius;
         Color c;
@@ -63,8 +86,16 @@ public class Balls {
         ballsCopy.add(new Ball(new MyVector(position), new MyVector(vitesse), c, rayon));
     }
 
-    public void translate(int w, int h){
-        for (Ball b : ballsList) b.translate(w, h);
+    public void update(){
+        for (Ball b : ballsList) b.update(w, h);
+    }
+
+    public int getWidth() {
+        return this.w;
+    }
+
+    public int getHeight() {
+        return this.h;
     }
 
     public String toStringCP(){

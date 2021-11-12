@@ -3,8 +3,8 @@ package fr.glob.event;
 public class EventTest extends Event {
     private int value;
 
-    public EventTest(long dateToPlay, int value) {
-        super(dateToPlay);
+    public EventTest(long dateToPlay, EventManager eventManager, int value) {
+        super(dateToPlay, eventManager);
         this.value = value;
     }
 
