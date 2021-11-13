@@ -1,6 +1,7 @@
 package fr.tests;
 
 import fr.balls.*;
+import fr.glob.MyVector;
 import fr.glob.event.*;
 
 
@@ -45,5 +46,9 @@ public class TestText {
         }
         if(args[0].equals("balls")) testBalls();
         if(args[0].equals("events")) testEvents();
+        
+        // MyVector a = new MyVector(2,2);
+        // MyVector b = new MyVector(0,3);
+        // System.out.println(MyVector.angle(b,a));
     }
 }

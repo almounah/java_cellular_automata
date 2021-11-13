@@ -19,6 +19,11 @@ public class Balls {
         else addRandomBalls(nbToAdd);
         
     }
+    public Balls(int nbToAdd, int w, int h){
+        ballsList = new ArrayList<Ball>();
+        ballsCopy = new ArrayList<Ball>();
+        this.w = w; this.h = h;addRandomBalls(nbToAdd);
+    }
 
     public ArrayList<Ball> getballsList(){
         return ballsList;

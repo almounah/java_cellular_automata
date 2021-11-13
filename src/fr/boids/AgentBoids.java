@@ -16,12 +16,13 @@ public class AgentBoids {
     public double portee; //rayon
     public double espacePerso; // rayon
 
-    static public double vitMax = 5.0;
-    static public double vitRepultionMax = vitMax * 1.3;
+    static public double vitMax = 7.0;
+    static public double vitRepultionMax = vitMax * 1.3; //Pour ne pas avoir d'agglomerat
     static public double accelMax = vitMax/2; // Méga camion de 2 tonnes ou F1?
+    static public double angleLimite = 90.0; //0-> voit rien, 90->demi cercle 180->vision complète
     
 
-    //Constructeur
+    //Constructeurs
 
     public AgentBoids(MyVector position, int rayon, Color c) {
         this.position = position;
@@ -61,15 +62,19 @@ public class AgentBoids {
         appliquerForce(steer);
     }
 
-    public void graviterAutour(MyVector objPos, double objMasse){
-        MyVector gravitation = MyVector.sub(objPos, position);
-        double dst = gravitation.masse();
-        gravitation.normalize();
-        double norme= (6.67 * 10e-11 * objMasse * this.masse)/(dst*dst);
-        gravitation.mult(norme);// Gmm'/ carré(d)
-        appliquerForce(gravitation);
-    }
 
+    private boolean isVisible(AgentBoids v){
+        return isVisible(v, this.position.dst(v.getPosition()));
+    }
+    private boolean isVisible(AgentBoids v, double dst){
+        if(dst>portee) return false; //Trop loin
+        MyVector fromMeToV = MyVector.sub(v.getPosition(), this.position); //dst-debut
+        double angle = MyVector.angle(this.vitesse, fromMeToV);
+        if(angle>angleLimite) return false; // Trop derrière
+        return true; 
+    }    
+
+    //Applique simplement la force de cohesion entre les agents proches
     private void applyCohesion(LinkedList<AgentBoids> agents){
         MyVector cohesion = new MyVector(0,0);
         int nbVoisins = 0;
@@ -77,7 +82,7 @@ public class AgentBoids {
         while(it.hasNext()){
             AgentBoids v = it.next();
             double dst = position.dst(v.getPosition());
-            if(dst > 0 && v != this && dst<portee){
+            if((v!=this) && isVisible(v,dst)){
                 nbVoisins++;
                 cohesion.add(v.getPosition());
             }
@@ -88,6 +93,7 @@ public class AgentBoids {
         }
     }
 
+    //Aligne le regard des agents dans une même direction
     private void applyAlignement(LinkedList<AgentBoids> agents){
         MyVector alignement = new MyVector(0,0);
         int nbVoisins = 0;
@@ -95,7 +101,7 @@ public class AgentBoids {
         while(it.hasNext()){
             AgentBoids v = it.next();
             double dst = position.dst(v.getPosition());
-            if(dst > 0 && v != this && dst<portee){
+            if((v!=this) && isVisible(v,dst)){
                 nbVoisins++;
                 alignement.add(v.getVitesse());
             }
@@ -109,6 +115,7 @@ public class AgentBoids {
         }
     }
 
+    //Applique simplement la force de séparation quand 2 agents sont trop proche
     private void applySeparation(LinkedList<AgentBoids> agents){
         int nbConnards = 0;
         MyVector separation = new MyVector(0,0);
@@ -116,7 +123,7 @@ public class AgentBoids {
         while(it.hasNext()){
             AgentBoids v = it.next();
             double dst = position.dst(v.getPosition());
-            if(dst > 0 && v != this && dst<espacePerso){
+            if((v!=this) && isVisible(v,dst) && dst<espacePerso){
                 MyVector diff = MyVector.sub(position,v.getPosition());
                 diff.normalize();
                 diff.div(dst);
@@ -133,12 +140,14 @@ public class AgentBoids {
         }
     }
 
+    //Applique les 3 forces fondamentalles une à une
     private void mouvementBoidsUnits(LinkedList<AgentBoids> agents){
         applyCohesion(agents);
         applyAlignement(agents);
         applySeparation(agents);
     }
 
+    //Applique les 3 forces fondamentalles avec un seul parcourt des voisins
     private void mouvementBoids(LinkedList<AgentBoids> agents){
         int nbVoisins = 0;
         int nbConnards = 0;
@@ -149,7 +158,7 @@ public class AgentBoids {
         while(it.hasNext()){
             AgentBoids v = it.next();
             double dst = position.dst(v.getPosition());
-            if(dst > 0 && v != this && dst<portee){
+            if((v!=this) && isVisible(v,dst)){                
                 nbVoisins++;
                 cohesion.add(v.getPosition());
                 alignement.add(v.getVitesse());
@@ -209,14 +218,10 @@ public class AgentBoids {
     }
 
     public void update(int w, int h, LinkedList<AgentBoids> agents){
-        //System.out.println("==========");
-        //System.out.println("Avant -> "+ this.toString());
-
         checkBounds(w,h, (w+h)/20); //limiteBord = moyenne/10
         mouvementBoids(agents);
         //mouvementBoidsUnits(agents);
         //rejoindre(new MyVector(w/2, h/2));
-        //graviterAutour(new MyVector(w/2, h/2), 300);
         
         acceleration.limit(accelMax);//On limite l'accel max après avoir appliqué toutes les forces
         vitesse.add(acceleration);
