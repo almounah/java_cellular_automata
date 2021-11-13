@@ -61,7 +61,7 @@ public class ConwaySimulator extends Simulateur {
             win);
     }
 
- 
+
      /** The constructor for all grid types.
      *  @param sizeOfSquare the size of a single square
      *  @param rows the number of rows
@@ -88,32 +88,36 @@ public class ConwaySimulator extends Simulateur {
         this.grid.initialize();
     }
 
-    public void draw_grid_line() {
+    /** Draw the line of the grid in Gray. */
+    public void drawGridLine() {
         Rectangle r;
         int size = sizeOfSquare * rows;
         for (int i = 0; i <= size; i += sizeOfSquare) {
-            r = new Rectangle(i, size / 2, Color.GRAY, Color.WHITE, 1, size);
+            // Until we reach size we keep drawing a horizontal rectangle
+            // and a vertical one.
+            // We give the center of the rectangle and its size.
+            r = new Rectangle(i, size / 2, Color.darkGray, Color.WHITE, 0, size);
             win.addGraphicalElement(r);
-            r = new Rectangle(size / 2, i, Color.GRAY, Color.WHITE, size, 1); 
+            r = new Rectangle(size / 2, i, Color.darkGray, Color.WHITE, size, 0); 
             win.addGraphicalElement(r);
         } 
     }
     
 
-    public void draw_cube(int x, int y, Color c) {
+    public void drawCube(int x, int y, Color c) {
         /*x and y are the coordinate of the top left*/    
         Rectangle r;
-        int cube_size = sizeOfSquare-4;
+        int cube_size = sizeOfSquare - 2;
         int x_center = x + halfSquare;
         int y_center = y + halfSquare;
         r = new Rectangle(x_center, y_center, c, c, cube_size, cube_size);
         win.addGraphicalElement(r);
     }
 
-    public void draw_grid()  {
+    public void drawGrid()  {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < rows; j++) {
-                draw_cube(j*sizeOfSquare, i*sizeOfSquare, listColors[grid.grid[j][i]]); 
+                drawCube(j * sizeOfSquare, i * sizeOfSquare, listColors[grid.grid[j][i]]); 
             }
         }
     }
@@ -121,16 +125,16 @@ public class ConwaySimulator extends Simulateur {
 
     @Override
     public String toString() {
-        return ("The board of size " + sizeOfSquare*rows);
+        return ("The board of size " + sizeOfSquare * rows);
     }
 
     @Override
     public void next() {
-        HashMap<String,ArrayList<Integer>> map = this.grid.getToChangeList();
+        HashMap<String, ArrayList<Integer>> map = this.grid.getToChangeList();
         win.reset();
         this.grid.updateGrid(map);
-        this.draw_grid();
-        this.draw_grid_line();
+        this.drawGrid();
+        this.drawGridLine();
 
     }
 
@@ -138,8 +142,8 @@ public class ConwaySimulator extends Simulateur {
     public void restart() {
         this.grid.reInit();
         win.reset();
-        this.draw_grid();
-        this.draw_grid_line();
+        this.drawGrid();
+        this.drawGridLine();
     }
 }
 
