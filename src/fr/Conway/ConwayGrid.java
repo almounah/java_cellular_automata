@@ -23,6 +23,9 @@ import java.util.ArrayList;
  */
 public class ConwayGrid {
 
+    /** The maximum number of neighboors allowed. */
+    private static final int MAX_NEIGHBOORS = 3;
+
     /** The number of column in the grid. */
     public int column;
 
@@ -112,9 +115,10 @@ public class ConwayGrid {
                         + grid[yAfter][xAfter];
 
         // Here we apply conway rules
-        if (neighboorSum == 3 && grid[y][x] == 0) {
+        if (neighboorSum == MAX_NEIGHBOORS && grid[y][x] == 0) {
             return true;
-        } else if ((neighboorSum > 3 || neighboorSum < 2) && grid[y][x] == 1) {
+        } else if ((neighboorSum > MAX_NEIGHBOORS
+                    || neighboorSum < MAX_NEIGHBOORS - 1) && grid[y][x] == 1) {
             return true;
         }
 
@@ -127,20 +131,20 @@ public class ConwayGrid {
      *  When updating our list we juts change the cells that have changed.
      *  Thus we gain in performance instead of looking for the element.
      */
-    public HashMap<String, ArrayList<Integer>> get_to_change_list() {
-        ArrayList<Integer> list_tochange_x = new ArrayList<Integer>();
-        ArrayList<Integer> list_tochange_y = new ArrayList<Integer>();
+    public HashMap<String, ArrayList<Integer>> getToChangeList() {
+        ArrayList<Integer> listToChangeX = new ArrayList<Integer>();
+        ArrayList<Integer> listToChangeY = new ArrayList<Integer>();
 
         HashMap<String, ArrayList<Integer>> map = new HashMap<String, ArrayList<Integer>>();
 
-        map.put("x_coord", list_tochange_x);
-        map.put("y_coord", list_tochange_y);
+        map.put("x_coord", listToChangeX);
+        map.put("y_coord", listToChangeY);
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < column; j++) {
                  if (updateCell(i, j)) {
-                     list_tochange_x.add(0, i);
-                     list_tochange_y.add(0, j);
+                     listToChangeX.add(0, i);
+                     listToChangeY.add(0, j);
                  }
             }
         }
@@ -153,16 +157,14 @@ public class ConwayGrid {
      *      list of the coordinate X with the key x_coord
      *      list of the coordinate Y with the key y_coord
      */
-    public void update_grid(final HashMap<String, ArrayList<Integer>> map) {
+    public void updateGrid(final HashMap<String, ArrayList<Integer>> map) {
 
-        ArrayList<Integer> list_tochange_x = map.get("x_coord");
-        ArrayList<Integer> list_tochange_y = map.get("y_coord");
+        ArrayList<Integer> listToChangeX = map.get("x_coord");
+        ArrayList<Integer> listToChangeY = map.get("y_coord");
 
-        for (int i = 0; i < list_tochange_x.size(); i++) {
-            grid[list_tochange_y.get(i)][list_tochange_x.get(i)]++;
-            grid[list_tochange_y.get(i)][list_tochange_x.get(i)] %= 2;
+        for (int i = 0; i < listToChangeX.size(); i++) {
+            grid[listToChangeY.get(i)][listToChangeX.get(i)]++;
+            grid[listToChangeY.get(i)][listToChangeX.get(i)] %= 2;
         }
     }
-
-
 }

@@ -77,7 +77,7 @@ public class SchellingGrid extends ConwayGrid {
 
 
     @Override
-    public void update_grid(HashMap<String,ArrayList<Integer>> map) {
+    public void updateGrid(HashMap<String,ArrayList<Integer>> map) {
         
         ArrayList<Integer> list_tochange_x = map.get("x_coord");
         ArrayList<Integer> list_tochange_y = map.get("y_coord");

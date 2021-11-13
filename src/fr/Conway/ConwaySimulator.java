@@ -1,7 +1,6 @@
 package fr.Conway;
 
 import fr.glob.*;
-import gui.Simulable;
 import gui.GUISimulator;
 import gui.Rectangle;
 import java.awt.Color;
@@ -81,9 +80,9 @@ public class ConwaySimulator extends Simulateur {
 
     @Override
     public void next() {
-        HashMap<String,ArrayList<Integer>> map = this.grid.get_to_change_list();
+        HashMap<String,ArrayList<Integer>> map = this.grid.getToChangeList();
         win.reset();
-        this.grid.update_grid(map);
+        this.grid.updateGrid(map);
         this.draw_grid();
         this.draw_grid_line();
 
