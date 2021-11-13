@@ -29,14 +29,14 @@ public class TestSimulator {
         }
 
         if (args[0].equals("immigration")) {
-            int size_of_square = 15, number_of_square = 40; 
+            int size_of_square = 20, number_of_square = 30; 
             Color[] list_color = new Color[]{Color.WHITE, Color.LIGHT_GRAY, Color.GRAY, Color.BLACK};
             gui.setSimulable(new ImmigrationSimulator(size_of_square, number_of_square, list_color, gui));
 
         }
 
         if (args[0].equals("schelling")) {
-            int size_of_square = 25, number_of_square=15, init_alive=2000, seuil = 3; 
+            int size_of_square = 20, number_of_square=30, init_alive=2000, seuil = 3; 
             Color[] list_color = new Color[]{Color.WHITE, Color.RED, Color.BLUE, Color.GREEN};
             gui.setSimulable(new SchellingSimulator(size_of_square, number_of_square, list_color, seuil, init_alive, gui));
         }

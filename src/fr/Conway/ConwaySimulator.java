@@ -14,6 +14,7 @@
 package fr.Conway;
 
 import fr.glob.Simulateur;
+import fr.glob.event.eventGrid.EventGrid;
 import gui.GUISimulator;
 import gui.Rectangle;
 import java.awt.Color;
@@ -86,6 +87,8 @@ public class ConwaySimulator extends Simulateur {
         this.win = win;
         halfSquare = sizeOfSquare / 2;
         this.grid.initialize();
+        em.addEvent(new EventGrid(em, this.grid));
+        em.setInitialStatus();
     }
 
     /** Draw the line of the grid in Gray. */
@@ -148,9 +151,8 @@ public class ConwaySimulator extends Simulateur {
     /** Implement the next method. */
     @Override
     public void next() {
-        HashMap<String, ArrayList<Integer>> map = this.grid.getToChangeList();
+        em.next();
         win.reset();
-        this.grid.updateGrid(map);
         this.drawGrid();
         this.drawGridLine();
     }
@@ -158,6 +160,7 @@ public class ConwaySimulator extends Simulateur {
     /** Implement the restart method. */
     @Override
     public void restart() {
+        em.restart();
         this.grid.reInit();
         win.reset();
         this.drawGrid();
