@@ -1,76 +1,130 @@
+/**
+ * This module is about simulating the Immigration game.
+ * It consists of two classes:
+ *  <ul>
+ *   <li>ImmigrationGrid : the part responsible for doing calculation</li>
+ *   <li>ImmigrationSimulator : the part responsible of drawing</li>
+ *  </ul>
+ *
+ * Note that ImmigrationGrid extends ConwayGrid and
+ * that ImmigrationSimulator extends ConwaySimulator.
+ *
+ * @author Haroun Al Mounayar
+ */
 package fr.Immigration;
 
-import fr.Conway.*;
+import fr.Conway.ConwayGrid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 
 /**
- * ImmigrationGrid
+ * ImmigrationGrid.
  */
 public class ImmigrationGrid extends ConwayGrid {
-    public int number_state;
 
-    public ImmigrationGrid(int rows, int column, int number_state) {
+    /** The number of state in the immigration game. */
+    public int numberState;
+
+    /** The maximum number of neighboors allowed. */
+    private static final int MAX_NEIGHBOORS = 3;
+
+    /** Constructor of the grid.
+     *
+     * @param column is the number of column
+     * @param rows is the number of rows
+     * @param numberState is the number of state
+     */
+    public ImmigrationGrid(final int rows,
+                           final int column,
+                           final int numberState) {
+        // In the immigration game the concept of
+        // a dead or alive cell is vague.
+        // So we put 0 initialy alive.
+        // Later we just have to change the initialize
+        // function.
         super(column, rows, 0);
-        this.number_state = number_state;
+        this.numberState = numberState;
     }
-    
 
+    /** Tell us if you should update a cell.
+     * We override update cell because the rule have changed.
+     * @param x is the x coordinate of the cell
+     * @param y is the y coordinate of the cell
+     * @return Boolean True if we should update the cell and False if not
+     */
     @Override
-    public boolean updateCell(int x, int y) {
-        int x_before, x_after;
-        int y_before, y_after;
-        int list_neighboor[] = new int[number_state];
-        for (int i = 0; i < list_neighboor.length; i++) {
-            list_neighboor[i] = 0; 
+    public boolean updateCell(final int x, final int y) {
+        int xBefore;
+        int xAfter;
+        int yBefore;
+        int yAfter;
+
+        // We create a list of neighboor.
+        // In this list we are going to put the number
+        // of neighboor of a specific state.
+        int[] listNeighboor = new int[numberState];
+
+        // First we initialize it to 0.
+        for (int i = 0; i < listNeighboor.length; i++) {
+            listNeighboor[i] = 0;
         }
 
-        x_before = (rows + x-1)%rows;
-        x_after = (x+1)%rows;
-        y_before = (column + y-1)%column;
-        y_after = (y+1)%column;
-        
-        list_neighboor[grid[y_before][x_before]]++;
-        list_neighboor[grid[y_before][x]]++;
-        list_neighboor[grid[y_before][x_after]]++;
-        list_neighboor[grid[y][x_before]]++;
-        list_neighboor[grid[y][x_after]]++;
-        list_neighboor[grid[y_after][x_before]]++;
-        list_neighboor[grid[y_after][x]]++; 
-        list_neighboor[grid[y_after][x_after]]++;
-        
-        if (list_neighboor[(grid[y][x]+1)%number_state] >= 3) {
+        // We do the modulo to have a circular grid
+        xBefore = (rows + x - 1) % rows;
+        xAfter = (x + 1) % rows;
+        yBefore = (column + y - 1) % column;
+        yAfter = (y + 1) % column;
+
+        // Then we just increment each neighboor.
+        listNeighboor[grid[yBefore][xBefore]]++;
+        listNeighboor[grid[yBefore][x]]++;
+        listNeighboor[grid[yBefore][xAfter]]++;
+        listNeighboor[grid[y][xBefore]]++;
+        listNeighboor[grid[y][xAfter]]++;
+        listNeighboor[grid[yAfter][xBefore]]++;
+        listNeighboor[grid[yAfter][x]]++;
+        listNeighboor[grid[yAfter][xAfter]]++;
+
+        // Here we apply the rule of the Immigration game.
+        if (listNeighboor[(grid[y][x] + 1) % numberState] >= MAX_NEIGHBOORS) {
             return true;
         }
         return false;
     }
 
+    /** Initialize the grid and its copy by putting each cell at a state.
+     *  We override it because the rule have changed.
+     *  At the beginning each cell is at a random state.
+     */
     @Override
     public void initialize() {
         // Everything is randomly at a state
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < column; j++) {
-                grid[j][i] = ThreadLocalRandom.current().nextInt(0, number_state);
+                grid[j][i] = ThreadLocalRandom.current().nextInt(0, numberState);
                 gridCopy[j][i] = grid[j][i];
-            }    
+            }
         }
     }
 
-
-
+    /** Update the grid by just checking the coordinate of the changed cell.
+     *  We need to override because the rule have changed.
+     *  Instead of just 0 and 1 a cell can go to 4 for example.
+     *  @param map is the map giving the
+     *      list of the coordinate X with the key x_coord
+     *      list of the coordinate Y with the key y_coord
+     */
     @Override
-    public void updateGrid(HashMap<String,ArrayList<Integer>> map) {
-        
-        ArrayList<Integer> list_tochange_x = map.get("x_coord");
-        ArrayList<Integer> list_tochange_y = map.get("y_coord");
-        for (int i = 0; i < list_tochange_x.size(); i++) {
-            grid[list_tochange_y.get(i)][list_tochange_x.get(i)]++;
-            grid[list_tochange_y.get(i)][list_tochange_x.get(i)] %= number_state;
-        
-        }
+    public void updateGrid(final HashMap<String, ArrayList<Integer>> map) {
 
+        ArrayList<Integer> listToChangeX = map.get("x_coord");
+        ArrayList<Integer> listToChangeY = map.get("y_coord");
+        for (int i = 0; i < listToChangeX.size(); i++) {
+            grid[listToChangeY.get(i)][listToChangeX.get(i)]++;
+            grid[listToChangeY.get(i)][listToChangeX.get(i)] %= numberState;
+        }
     }
 
 }
