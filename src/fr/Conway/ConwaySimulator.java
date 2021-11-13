@@ -96,38 +96,56 @@ public class ConwaySimulator extends Simulateur {
             // Until we reach size we keep drawing a horizontal rectangle
             // and a vertical one.
             // We give the center of the rectangle and its size.
-            r = new Rectangle(i, size / 2, Color.darkGray, Color.WHITE, 0, size);
+            r = new Rectangle(i, size / 2, Color.darkGray, Color.WHITE,
+                              0, size);
             win.addGraphicalElement(r);
-            r = new Rectangle(size / 2, i, Color.darkGray, Color.WHITE, size, 0); 
+            r = new Rectangle(size / 2, i, Color.darkGray, Color.WHITE,
+                              size, 0);
             win.addGraphicalElement(r);
-        } 
+        }
     }
-    
 
-    public void drawCube(int x, int y, Color c) {
-        /*x and y are the coordinate of the top left*/    
+    /** Draw a cube representing a point in the grid.
+     *  @param x is the x coordinate
+     *  @param y is the u coordinate
+     *  @param c is the color of the cube
+     */
+    public void drawCube(final int x, final int y, final Color c) {
+        /*x and y are the coordinate of the top left*/
         Rectangle r;
-        int cube_size = sizeOfSquare - 2;
-        int x_center = x + halfSquare;
-        int y_center = y + halfSquare;
-        r = new Rectangle(x_center, y_center, c, c, cube_size, cube_size);
+        int cubeSize = sizeOfSquare - 2;
+        int xCenter = x + halfSquare;
+        int yCenter = y + halfSquare;
+        r = new Rectangle(xCenter, yCenter, c, c, cubeSize, cubeSize);
         win.addGraphicalElement(r);
     }
 
+    /** Go through the grid and draw everycube. */
     public void drawGrid()  {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < rows; j++) {
-                drawCube(j * sizeOfSquare, i * sizeOfSquare, listColors[grid.grid[j][i]]); 
+                // We use enumerated type for the colors.
+                // Eg: say listColors = {white, red, blue}
+                // we map the color to a fictionnal list of state
+                // state = {0, 1, 2}. A cell in the grid can either have
+                // 0, 1 or 2 value.
+                // So to get the correct color of a cell we just do :
+                // listColors[cell_state].
+                drawCube(j * sizeOfSquare, i * sizeOfSquare,
+                         listColors[grid.grid[j][i]]);
             }
         }
     }
 
-
+    /** Return a string giving the size of the board.
+     *  @return the string.
+     */
     @Override
     public String toString() {
         return ("The board of size " + sizeOfSquare * rows);
     }
 
+    /** Implement the next method. */
     @Override
     public void next() {
         HashMap<String, ArrayList<Integer>> map = this.grid.getToChangeList();
@@ -135,9 +153,9 @@ public class ConwaySimulator extends Simulateur {
         this.grid.updateGrid(map);
         this.drawGrid();
         this.drawGridLine();
-
     }
 
+    /** Implement the restart method. */
     @Override
     public void restart() {
         this.grid.reInit();
@@ -146,5 +164,3 @@ public class ConwaySimulator extends Simulateur {
         this.drawGridLine();
     }
 }
-
-
