@@ -7,6 +7,7 @@ import gui.Rectangle;
 
 import java.awt.Color;
 
+import fr.glob.MyVector;
 import fr.glob.Simulateur;
 import fr.glob.event.*;
 import fr.glob.event.eventBoids.*;
@@ -22,6 +23,7 @@ public class AgentsSim extends Simulateur {
     }
 
     private void drawAgents(){
+        boolean printSpeed = true;
         for(AgentBoids a : agents.getAgents()){
             // win.addGraphicalElement(
             //     new Oval(
@@ -43,7 +45,19 @@ public class AgentsSim extends Simulateur {
                     (int) a.getPosition().y, 
                     a.getColor(), 
                     a.getColor(), 
-                    a.getRayon()*2));  
+                    a.getRayon()*2)); 
+            if(printSpeed){
+                MyVector seeSpeed = new MyVector(a.getVitesse().x, a.getVitesse().y);
+                seeSpeed.normalize(); seeSpeed.mult(a.getRayon()*2);
+                win.addGraphicalElement(
+                    new Oval(
+                        (int) (a.getPosition().x + seeSpeed.x), 
+                        (int) (a.getPosition().y + seeSpeed.y), 
+                        Color.white, 
+                        Color.white, 
+                        a.getRayon()/2)); 
+            }
+             
         }         
             
     }

@@ -11,7 +11,7 @@ import java.awt.Color;
 public class TestSimulator {
     public static void main(String[] args) {
 
-        int w=700, h=500, nbAgents = 20;
+        int w=1000, h=800, nbAgents = 20;
         GUISimulator gui = new GUISimulator(w, h, Color.BLACK);
 
         if(args[0].equals("boids")){

@@ -19,6 +19,16 @@ public class MyVector {
         return new MyVector(a.x - b.x, a.y - b.y);
     }
 
+    public static double produitSclaire(MyVector a, MyVector b){
+        return a.x*b.x + a.y*b.y;
+    }
+
+    public static double angle(MyVector a, MyVector b){
+        double value = produitSclaire(a, b) / (a.masse()*b.masse());
+        if(value<-1 || value>1) System.out.println("ERREUR: non-logical cos!");
+        return java.lang.Math.acos(value)* (180.0/java.lang.Math.PI);
+    }
+
     public double dst(MyVector a){
         MyVector d = sub(this,a);
         return d.masse();
