@@ -1,3 +1,16 @@
+/**
+ * This module is about simulating boids.
+ * It consists of two classes:
+ *  <ul>
+ *   <li>AgentBoids : the part responsible for doing calculation
+ *                    for 1 boids </li>
+ *   <li>AgentsBoids : the part responsible of doing calculations
+ *                    for a list of boids.</li>
+ *   <li>AgentsSim : for drawing </li>
+ *  </ul>
+ *
+ */
+
 package fr.boids;
 
 import fr.glob.MyVector;
@@ -5,165 +18,150 @@ import java.awt.Color;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+
+/**
+ * AgentBoids.
+*/
 public class AgentBoids {
 
+    /** The position vector. */
     private MyVector position;
+
+    /** The speed vector. */
     private MyVector vitesse;
+
+    /** The acceleration vector. */
     private MyVector acceleration;
+
+    /** The radius. */
     private int rayon;
+
+    /** The mass of the boids. */
     private double masse = 30.0;
+
+    /** The color of the boids. */
     private Color color;
+
+    /** The length of the boids. */
     public double portee; //rayon
+
+    /** The space of the boids. */
     public double espacePerso; // rayon
 
+    /** The maximum speed. */
     static public double vitMax = 12.0;
-    static public double vitRepultionMax = vitMax * 1.3; //Pour ne pas avoir d'agglomerat
-    static public double accelMax = vitMax/2; // Méga camion de 2 tonnes ou F1?
-    static public double angleLimite = 110.0; //0-> voit rien, 90->demi cercle 180->vision complète
-    
 
-    //Constructeurs
+    /** The maximum repulsion speed. */
+    //Pour ne pas avoir d'agglomerat
+    static public double vitRepultionMax = vitMax * 1.3;
 
-    public AgentBoids(MyVector position, int rayon, Color c) {
+    /** The maximum acceleration. */
+    // Méga camion de 2 tonnes ou F1?
+    static public double accelMax = vitMax / 2;
+
+    /** The maximum angle. */
+    //0-> voit rien, 90->demi cercle 180->vision complète
+    static public double angleLimite = 110.0;
+
+    /** The constructor of a Boids.
+     * @param position : the position of the boids
+     * @param rayon : the radium
+     * @param c : the color
+     * */
+    public AgentBoids(final MyVector position, final int rayon, final Color c) {
         this.position = position;
-        this.vitesse = new MyVector(0,0);
-        this.acceleration = new MyVector(0,0);
+        this.vitesse = new MyVector(0, 0);
+        this.acceleration = new MyVector(0, 0);
         this.rayon = rayon;
-        portee = rayon*8;
+        portee = rayon * 8;
         espacePerso = portee / 2;
         this.color = c;
     }
 
-    public AgentBoids(MyVector position, MyVector vitesse, int rayon, Color c) {
+    /** The second constructor of a Boids.
+     * This time we use the speed.
+     * @param position : the position of the boids
+     * @param vitesse : the speed
+     * @param rayon : the radium
+     * @param c : the color
+     * */
+    public AgentBoids(final MyVector position,
+                      final MyVector vitesse,
+                      final int rayon,
+                      final Color c) {
         this.position = position;
         this.vitesse = vitesse;
-        this.acceleration = new MyVector(0,0);
+        this.acceleration = new MyVector(0, 0);
         this.rayon = rayon;
         this.color = c;
-        portee = rayon+70.0;
-        espacePerso = portee *0.8;
+        portee = rayon + 70.0;
+        espacePerso = portee * 0.8;
     }
 
-    //Methodes    
 
-    public void appliquerForce(MyVector force){
-        MyVector f = new MyVector(force); //Pour ne pas changer la variable force
+    /** Apply the force to the acceleration.
+     * @param force : the force we want to apply
+     */
+    public void appliquerForce(final MyVector force) {
+        //Pour ne pas changer la variable force
+        MyVector f = new MyVector(force);
         f.div(masse); // 2eme loi de Newton
-        //System.out.println("Applique f = "+ force + " | Soit-> " + f);
         acceleration.add(f);
     }
 
-    //Algo qui permet de rejoindre un point à l'aide de la 'steer force' de Reynolds
-    public void rejoindre(MyVector cible){
-        MyVector desired = MyVector.sub(cible, position); //variation de pos = vitesse
+    /** Let the boids join another one.
+     * Reynolds steer force is used.
+     * @param cible : the other boid position
+     * */
+    public void rejoindre(final MyVector cible) {
+        //variation de pos = vitesse
+        MyVector desired = MyVector.sub(cible, position);
+        
         desired.normalize();
         desired.mult(vitMax); // Pour ne pas foncer à toutes berzingue
-        MyVector steer = MyVector.sub(desired, vitesse); //'steer force' de Reynolds
+        
+        //'steer force' de Reynolds
+        MyVector steer = MyVector.sub(desired, vitesse);
         appliquerForce(steer);
     }
 
-
-    private boolean isVisible(AgentBoids v){
-        return isVisible(v, this.position.dst(v.getPosition()));
-    }
-    private boolean isVisible(AgentBoids v, double dst){
-        if(dst>portee) return false; //Trop loin
-        MyVector fromMeToV = MyVector.sub(v.getPosition(), this.position); //dst-debut
+    /** Tells if a boid is visible to another.
+     * @param dst : the distance between the boids.
+     * @param v : the other boids.
+     * @return True if is visible and False if not.
+     * */
+    private boolean isVisible(final AgentBoids v, final  double dst) {
+        if (dst > portee) {
+            return false; //Trop loin
+        }
+        //dst-debut
+        MyVector fromMeToV = MyVector.sub(v.getPosition(), this.position);
         double angle = MyVector.angle(this.vitesse, fromMeToV);
-        if(angle>angleLimite) return false; // Trop derrière
-        return true; 
-    }    
-
-    //Applique simplement la force de cohesion entre les agents proches
-    private void applyCohesion(LinkedList<AgentBoids> agents){
-        MyVector cohesion = new MyVector(0,0);
-        int nbVoisins = 0;
-        Iterator<AgentBoids> it = agents.iterator();
-        while(it.hasNext()){
-            AgentBoids v = it.next();
-            double dst = position.dst(v.getPosition());
-            if((v!=this) && isVisible(v,dst)){
-                nbVoisins++;
-                cohesion.add(v.getPosition());
-            }
+        if (angle > angleLimite) {
+            return false; // Trop derrière
         }
-        if(nbVoisins > 0){
-            cohesion.div(nbVoisins);
-            rejoindre(cohesion);
-        }
+        return true;
     }
 
-    //Aligne le regard des agents dans une même direction
-    private void applyAlignement(LinkedList<AgentBoids> agents){
-        MyVector alignement = new MyVector(0,0);
-        int nbVoisins = 0;
-        Iterator<AgentBoids> it = agents.iterator();
-        while(it.hasNext()){
-            AgentBoids v = it.next();
-            double dst = position.dst(v.getPosition());
-            if((v!=this) && isVisible(v,dst)){
-                nbVoisins++;
-                alignement.add(v.getVitesse());
-            }
-        }
-        if(nbVoisins > 0){
-            alignement.div(nbVoisins);
-            alignement.normalize();
-            alignement.mult(vitMax);
-            MyVector steer = MyVector.sub(alignement, vitesse); //'steer force' de Reynolds
-            appliquerForce(steer);
-        }
-    }
-
-    //Applique simplement la force de séparation quand 2 agents sont trop proche
-    private void applySeparation(LinkedList<AgentBoids> agents){
-        int nbConnards = 0;
-        MyVector separation = new MyVector(0,0);
-        Iterator<AgentBoids> it = agents.iterator();
-        while(it.hasNext()){
-            AgentBoids v = it.next();
-            double dst = position.dst(v.getPosition());
-            if((v!=this) && isVisible(v,dst) && dst<espacePerso){
-                MyVector diff = MyVector.sub(position,v.getPosition());
-                diff.normalize();
-                diff.div(dst);
-                separation.add(diff);
-                nbConnards++;
-            }
-        }
-        if(nbConnards > 0){
-            separation.div(nbConnards);
-            separation.normalize();
-            separation.mult(vitRepultionMax);
-            MyVector steer = MyVector.sub(separation, vitesse);
-            appliquerForce(steer);
-        }
-    }
-
-    //Applique les 3 forces fondamentalles une à une
-    private void mouvementBoidsUnits(LinkedList<AgentBoids> agents){
-        applyCohesion(agents);
-        applyAlignement(agents);
-        applySeparation(agents);
-    }
-
-    //Applique les 3 forces fondamentalles avec un seul parcourt des voisins
-    private void mouvementBoids(LinkedList<AgentBoids> agents){
+    /**Apply the 3 main forces by looping through neighboors.
+     * @param agents the list of the boids.
+     * */
+    private void mouvementBoids(final LinkedList<AgentBoids> agents) {
         int nbVoisins = 0;
         int nbConnards = 0;
-        MyVector cohesion = new MyVector(0,0);
-        MyVector alignement = new MyVector(0,0);
-        MyVector separation = new MyVector(0,0);
+        MyVector cohesion = new MyVector(0, 0);
+        MyVector alignement = new MyVector(0, 0);
+        MyVector separation = new MyVector(0, 0);
         Iterator<AgentBoids> it = agents.iterator();
-        while(it.hasNext()){
+        while (it.hasNext()) {
             AgentBoids v = it.next();
             double dst = position.dst(v.getPosition());
-            if((v!=this) && isVisible(v,dst)){                
+            if ((v != this) && isVisible(v, dst)) {
                 nbVoisins++;
                 cohesion.add(v.getPosition());
                 alignement.add(v.getVitesse());
-                if(dst < espacePerso){
-                    MyVector diff = MyVector.sub(position,v.getPosition());
+                if (dst < espacePerso) {
+                    MyVector diff = MyVector.sub(position, v.getPosition());
                     diff.normalize();
                     diff.div(dst);
                     separation.add(diff);
@@ -171,104 +169,135 @@ public class AgentBoids {
                 }
             }
         }
-        if(nbVoisins > 0){
+        if (nbVoisins > 0) {
             cohesion.div(nbVoisins);
             rejoindre(cohesion);
-    
+
             alignement.div(nbVoisins);
             alignement.normalize();
             alignement.mult(vitMax);
-            MyVector steer = MyVector.sub(alignement, vitesse); //'steer force' de Reynolds
+            //'steer force' de Reynolds
+            MyVector steer = MyVector.sub(alignement, vitesse);
             appliquerForce(steer);
         }
-        if(nbConnards > 0){
+        if (nbConnards > 0) {
             separation.div(nbConnards);
             separation.normalize();
             separation.mult(vitRepultionMax);
             MyVector steer = MyVector.sub(separation, vitesse);
             appliquerForce(steer);
         }
-        
     }
 
-    //Met à jour l'accel en fct de la proximité au bords
-    public void checkBounds(int w, int h, int limiteBord){
-        int x = (int)position.x, y = (int)position.y;
-        if(x < rayon+limiteBord){
-            //System.out.println("GAUCHE");
+    /** Update the acceleration taking in consideration the bounding.
+     * @param w : the width
+     * @param h : the height
+     * @param limiteBord : the limit distance from the bound.
+     * */
+    public void checkBounds(final int w,
+                            final int h,
+                            final int limiteBord) {
+        int x = (int) position.x;
+        int y = (int) position.y;
+        if (x < rayon + limiteBord) {
             appliquerForce(new MyVector(vitMax, 0));
-        } 
-        if(x > w-limiteBord-rayon){
-            //System.out.println("DROITE");
+        }
+        if (x > w - limiteBord - rayon) {
             appliquerForce(new MyVector(-vitMax, 0));
         }
-        if(y < rayon+limiteBord){
-            //System.out.println("HAUT");
+        if (y < rayon + limiteBord) {
             appliquerForce(new MyVector(0, vitMax));
         }
-        if(y > h-limiteBord-rayon){
-            //System.out.println("BAS");
-            appliquerForce(new MyVector(0,-vitMax));
+        if (y > h - limiteBord - rayon) {
+            appliquerForce(new MyVector(0, -vitMax));
         }
 
-        if(x<0) position.x = 0;
-        if(y<0) position.y = 0;
-        if(x>w) position.x = w-1;
-        if(y>h) position.y = h-1;
+        if (x < 0) {
+            position.x = 0;
+        }
+        if (y < 0) {
+            position.y = 0;
+        }
+        if (x > w) {
+            position.x = w - 1;
+        }
+        if (y > h) {
+            position.y = h - 1;
+        }
     }
 
-    public void update(int w, int h, LinkedList<AgentBoids> agents){
-        checkBounds(w,h, (w+h)/20); //limiteBord = moyenne/10
+    /** Update the boids position.
+     * @param w : the width
+     * @param h : the height
+     * @param agents : the linked list of boids.
+     * */
+    public void update(final int w,
+                       final int h,
+                       final LinkedList<AgentBoids> agents) {
+        checkBounds(w, h, (w + h) / 20); //limiteBord = moyenne/10
         mouvementBoids(agents);
-        //mouvementBoidsUnits(agents);
-        //rejoindre(new MyVector(w/2, h/2));
-        
-        acceleration.limit(accelMax);//On limite l'accel max après avoir appliqué toutes les forces
+
+        //On limite l'accel max après avoir appliqué toutes les forces
+        acceleration.limit(accelMax);
         vitesse.add(acceleration);
         position.add(vitesse);
 
         //A la fin on multiplie par 0 (1ere loi Newton)
-        //System.out.println("Après -> "+ this.toString());
         acceleration.x = 0.0; acceleration.y = 0.0;
     }
 
-    // Getters
-
-
+    /** Get the position.
+     * @return the position of the boids.
+     * */
     public MyVector getPosition() {
         return this.position;
     }
 
+    /** Get the speed.
+     * @return the speed of the boids.
+     * */
     public MyVector getVitesse() {
         return this.vitesse;
     }
 
+    /** Get the acceleration.
+     * @return the acceleration of the boids.
+     * */
     public MyVector getAcceleration() {
         return this.acceleration;
     }
 
+    /** Get the radius.
+     * @return the radius of the boids.
+     * */
     public int getRayon() {
         return this.rayon;
     }
 
+    /** Get the color.
+     * @return the color of the boids.
+     * */
     public Color getColor() {
         return this.color;
     }
 
-
+    /** Get the string of the color.
+     * @return the color of the boids as a string.
+     * */
     public String me() {
         return
             "Color:" + getColor();
     }
 
 
+    /** Override the toString method.
+     * @return A string representing a boids.
+     * */
     @Override
     public String toString() {
         return
-            "Agents = position=" + getPosition() + 
-            ", vitesse=" + getVitesse() + 
-            ", acceleration=" + getAcceleration();
+            "Agents = position=" + getPosition()
+            + ", vitesse=" + getVitesse()
+            + ", acceleration=" + getAcceleration();
     }
-    
-  
 }
