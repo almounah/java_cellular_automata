@@ -1,3 +1,15 @@
+/**
+ * This module is about simulating Balls.
+ * It consists of three classes:
+ *  <ul>
+ *   <li>Ball : the part responsible for doing calculation for one ball</li>
+ *   <li>Balls : for the calculation for many balls</li>
+ *   <li>BallSimulator : for drawing </li>
+ *  </ul>
+ *
+ * @author HarorOfLaughtale
+ */
+
 package fr.balls;
 
 import java.util.ArrayList;
@@ -7,11 +19,19 @@ import java.awt.Color;
 import fr.glob.MyVector;
 
 public class Balls {
+    /** The list of the balls */
     private ArrayList<Ball> ballsList;
-    private ArrayList<Ball> ballsCopy;
-    private int w,h;
 
-    public Balls(int nbToAdd, int w, int h, boolean useRedBlueBalls){
+    /** The copy of the list of the balls */
+    private ArrayList<Ball> ballsCopy;
+
+    /** The width */
+    private int w;
+
+    /** The height */
+    private int h;
+
+    public Balls(int nbToAdd, int w, int h, boolean useRedBlueBalls) {
         ballsList = new ArrayList<Ball>();
         ballsCopy = new ArrayList<Ball>();
         this.w = w; this.h = h;
@@ -19,22 +39,27 @@ public class Balls {
         else addRandomBalls(nbToAdd);
         
     }
-    public Balls(int nbToAdd, int w, int h){
+
+    public Balls(int nbToAdd, int w, int h) {
         ballsList = new ArrayList<Ball>();
         ballsCopy = new ArrayList<Ball>();
-        this.w = w; this.h = h;addRandomBalls(nbToAdd);
+        this.w = w;
+        this.h = h;
+        addRandomBalls(nbToAdd);
     }
 
-    public ArrayList<Ball> getballsList(){
+    public ArrayList<Ball> getballsList() {
         return ballsList;
     }
 
-    public void reInit(){
-        if(ballsCopy.size() != ballsList.size()) throw new RuntimeException("reInit : Listes de taille différentes!");
+    public void reInit() {
+        if(ballsCopy.size() != ballsList.size()) {
+            throw new RuntimeException("reInit : Listes de taille différentes!");
+        }
         Iterator<Ball> itL = ballsList.iterator();
         Iterator<Ball> itC = ballsCopy.iterator();
         Ball b, bc; MyVector v, vc;
-        while(itL.hasNext() && itC.hasNext()){
+        while (itL.hasNext() && itC.hasNext()) {
             b = itL.next();
             bc = itC.next();
             v = b.getPosition();
@@ -46,20 +71,25 @@ public class Balls {
         }
     }
 
-    public void addBlueRedBalls(int nbToAdd){
+    public void addBlueRedBalls(int nbToAdd) {
         Random r = new Random();
-        int x, y, dx, dy, radius;
-        int maxSpeed = (h+w)/100; // moyenne/50
-        int radiusRed = 20, radiusBlue = 40;
+        int x;
+        int y;
+        int dx;
+        int dy;
+        int radius;
+        int maxSpeed = (h + w) / 100; // moyenne/50
+        int radiusRed = 20;
+        int radiusBlue = 40;
         Color c;
-        for (int i = 0; i < nbToAdd; i++){
-            boolean isRed = i%2==0;
+        for (int i = 0; i < nbToAdd; i++) {
+            boolean isRed = (i % 2 == 0);
             radius = isRed ? radiusRed : radiusBlue;
-            x = r.nextInt(w-radius) + radius; // Intervalle [radius; w-radius]
-            y = r.nextInt(h-radius) + radius;
+            x = r.nextInt(w - radius) + radius; // Intervalle [radius; w-radius]
+            y = r.nextInt(h - radius) + radius;
             MyVector pos = new MyVector(x, y);
-            dx =  r.nextInt(maxSpeed) - maxSpeed/2; //soustraction pour centrer l'intervalle en 0 
-            dy = r.nextInt(maxSpeed) - maxSpeed/2;
+            dx =  r.nextInt(maxSpeed) - maxSpeed / 2; //soustraction pour centrer l'intervalle en 0 
+            dy = r.nextInt(maxSpeed) - maxSpeed / 2;
             MyVector vit = new MyVector(dx, dy);
             vit.normalize(); vit.mult((double) maxSpeed);
             c = isRed ? Color.RED : Color.BLUE;
@@ -67,33 +97,34 @@ public class Balls {
         }
     }
 
-    public void addRandomBalls(int nbToAdd){
+    public void addRandomBalls(int nbToAdd) {
         Random r = new Random();
         int x, y, dx, dy, radius;
         Color c;
-        int maxSpeed = (h+w)/100; // moyenne/50
-        int radiusMin = 20, radiusMax = 30;        
+        int maxSpeed = (h + w) / 100; // moyenne/50
+        int radiusMin = 20;
+        int radiusMax = 30;        
         Color[] colors = {
             Color.RED, Color.BLUE, Color.GREEN, Color.ORANGE,
-            Color.CYAN, Color.MAGENTA, Color.YELLOW, Color.PINK,};
+            Color.CYAN, Color.MAGENTA, Color.YELLOW, Color.PINK};
         
-        for (int i = 0; i < nbToAdd; i++){
-            radius = r.nextInt(radiusMax-radiusMin) + radiusMin;
-            x = r.nextInt(w-radius) + radius; // Intervalle [radius; w-radius]
-            y = r.nextInt(h-radius) + radius;
-            dx =  r.nextInt(maxSpeed) - maxSpeed/2; //soustraction pour centrer l'intervalle en 0 
-            dy = r.nextInt(maxSpeed) - maxSpeed/2;
-            c = colors[i%colors.length];
+        for (int i = 0; i < nbToAdd; i++) {
+            radius = r.nextInt(radiusMax - radiusMin) + radiusMin;
+            x = r.nextInt(w - radius) + radius; // Intervalle [radius; w-radius]
+            y = r.nextInt(h - radius) + radius;
+            dx =  r.nextInt(maxSpeed) - maxSpeed / 2; //soustraction pour centrer l'intervalle en 0 
+            dy = r.nextInt(maxSpeed) - maxSpeed / 2;
+            c = colors[i % colors.length];
             addBall(new MyVector(x, y), new MyVector(dx, dy), c, radius);
         }
     }
 
-    public void addBall(MyVector position, MyVector vitesse, Color c, int rayon){
+    public void addBall(MyVector position, MyVector vitesse, Color c, int rayon) {
         ballsList.add(new Ball(position, vitesse, c, rayon));
         ballsCopy.add(new Ball(new MyVector(position), new MyVector(vitesse), c, rayon));
     }
 
-    public void update(){
+    public void update() {
         for (Ball b : ballsList) b.update(w, h);
     }
 
@@ -105,16 +136,16 @@ public class Balls {
         return this.h;
     }
 
-    public String toStringCP(){
-        String str = "BallsCopy ("+this.ballsList.size()+"): ";
-        for (Ball b : ballsCopy) str += "["+ b.toString()+"]";
+    public String toStringCP() {
+        String str = "BallsCopy (" + this.ballsList.size() + "): ";
+        for (Ball b : ballsCopy) str += "["+ b.toString() + "]";
         return str;
     }
 
     @Override
-    public String toString(){
-        String str = "BallsList ("+this.ballsList.size()+"): ";
-        for (Ball b : ballsList) str += "["+ b.toString() +"]";
+    public String toString() {
+        String str = "BallsList (" + this.ballsList.size() + "): ";
+        for (Ball b : ballsList) str += "["+ b.toString() + "]";
         return str;
     }
 
