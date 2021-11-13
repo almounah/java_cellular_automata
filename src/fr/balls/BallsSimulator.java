@@ -1,27 +1,62 @@
+/**
+ * This module is about simulating Balls.
+ * It consists of three classes:
+ *  <ul>
+ *   <li>Ball : the part responsible for doing calculation for one ball</li>
+ *   <li>Balls : for the calculation for many balls</li>
+ *   <li>BallSimulator : for drawing </li>
+ *  </ul>
+ *
+ * @author HarorOfLaughtale
+ */
+
 package fr.balls;
 
-import gui.Simulable;
 import gui.GUISimulator;
 import gui.Oval;
-import gui.Rectangle;
 
 import java.awt.Color;
 
 import fr.glob.Simulateur;
-import fr.glob.event.*;
 import fr.glob.event.eventBalls.*;
 
-public class BallsSimulator extends Simulateur{
+/** BallSimulator.
+ */
+public class BallsSimulator extends Simulateur {
+
+    /** The list of the balls we want to simulate. */
     private Balls balls;
 
-    public BallsSimulator(int width, int height, int nbBalls, GUISimulator win) {
+    /** The constructor of ball simulator.
+     *  @param width
+     *  @param height
+     *  @param nbBalls The number of Balls
+     *  @param win : where we want to Draw the Balls
+     * */
+    public BallsSimulator(final int width,
+                          final int height,
+                          final int nbBalls,
+                          final GUISimulator win) {
         super(width, height, win);
         this.balls = new Balls(nbBalls, width, height, false);
         em.addEvent(new EventMoveBalls(this.em, this.balls));
         em.setInitialStatus();
     }
 
-    public BallsSimulator(int width, int height, int nbBalls, GUISimulator win, boolean useRedBlueBalls) {
+    /** The second constructor of ball simulator.
+     *  It is used to demonstrate the event manager.
+     *  @param width
+     *  @param height
+     *  @param nbBalls The number of Balls
+     *  @param win : where we want to Draw the Balls
+     *  @param useRedBlueBalls : tell us if we should use red and
+     *                           blue balls for the events.
+     * */
+    public BallsSimulator(final int width,
+                          final int height,
+                          final int nbBalls,
+                          final GUISimulator win,
+                          final boolean useRedBlueBalls) {
         super(width, height, win);
         this.balls = new Balls(nbBalls, width, height, useRedBlueBalls);
         em.addEvent(new EventMoveRedBalls(this.em, balls));
@@ -29,28 +64,29 @@ public class BallsSimulator extends Simulateur{
         em.setInitialStatus();
     }
 
-    private void drawBalls(){
-        for(Ball b : balls.getballsList())
-            win.addGraphicalElement(
-                new Oval(
-                    (int)b.getPosition().x,
-                    (int)b.getPosition().y,
-                    b.getColor(), 
-                    b.getColor(), 
-                    b.getRayon()*2
-                )
-            );
+    /** Draw all the balls in the list. */
+    private void drawBalls() {
+        for (Ball b : balls.getballsList()) {
+            win.addGraphicalElement(new Oval((int) b.getPosition().x,
+                                             (int) b.getPosition().y,
+                                             b.getColor(),
+                                             b.getColor(),
+                                             b.getRayon() * 2));
+        }
     }
 
+    /** The next method when we press on suivant. */
     @Override
-    public void next(){
+    public void next() {
         em.next();
         win.reset();
         drawEdge(Color.white);
         drawBalls();
     }
+
+    /** The restart method when we press on debut. */
     @Override
-    public void restart(){
+    public void restart() {
         em.restart();
         balls.reInit();
         win.reset();
@@ -58,11 +94,14 @@ public class BallsSimulator extends Simulateur{
         drawBalls();
     }
 
+    /** The toString method.
+     * @return the string representing the balls.
+     */
     @Override
     public String toString() {
-        return "{" +
-            " balls='" + balls + "'" +
-            "}";
+        return "{"
+            + " balls='" + balls + "'"
+            + "}";
     }
 
 }
