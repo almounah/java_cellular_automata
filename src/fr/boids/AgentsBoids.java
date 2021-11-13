@@ -12,6 +12,9 @@ public class AgentsBoids {
     private LinkedList<AgentBoids> agentsList;
     private LinkedList<AgentBoids> copy;
     private int w,h;
+    // {Color.RED, Color.BLUE, Color.GREEN, Color.ORANGE,
+    //     Color.CYAN, Color.MAGENTA, Color.YELLOW, Color.PINK};
+    public static Color[] colors = {Color.RED};
 
     public AgentsBoids(int nbToAdd, int w, int h){
         agentsList = new LinkedList<AgentBoids>();
@@ -50,9 +53,6 @@ public class AgentsBoids {
         Color c;
         int x, y,dx, dy, maxSpeed=(int)AgentBoids.vitMax, radius = 5;
         //int radiusMin = 10, radiusMax = 15;
-        Color[] colors = {
-            Color.RED, Color.BLUE, Color.GREEN, Color.ORANGE,
-            Color.CYAN, Color.MAGENTA, Color.YELLOW, Color.PINK,};
         for (int i = 0; i < nbToAdd; i++){
             //radius = r.nextInt(radiusMax-radiusMin) + radiusMin;
             x = r.nextInt(w-radius*2) + radius; // Intervalle [radius; w-radius]

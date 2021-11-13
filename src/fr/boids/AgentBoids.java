@@ -16,10 +16,10 @@ public class AgentBoids {
     public double portee; //rayon
     public double espacePerso; // rayon
 
-    static public double vitMax = 7.0;
+    static public double vitMax = 12.0;
     static public double vitRepultionMax = vitMax * 1.3; //Pour ne pas avoir d'agglomerat
     static public double accelMax = vitMax/2; // Méga camion de 2 tonnes ou F1?
-    static public double angleLimite = 90.0; //0-> voit rien, 90->demi cercle 180->vision complète
+    static public double angleLimite = 110.0; //0-> voit rien, 90->demi cercle 180->vision complète
     
 
     //Constructeurs
