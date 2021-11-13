@@ -18,8 +18,6 @@ import fr.glob.event.eventGrid.EventGrid;
 import gui.GUISimulator;
 import gui.Rectangle;
 import java.awt.Color;
-import java.util.HashMap;
-import java.util.ArrayList;
 
 /**
  * ConwaySimulator.
