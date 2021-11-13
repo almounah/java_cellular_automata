@@ -19,7 +19,7 @@ public class ImmigrationGrid extends ConwayGrid {
     
 
     @Override
-    public boolean update_cell(int x, int y) {
+    public boolean updateCell(int x, int y) {
         int x_before, x_after;
         int y_before, y_after;
         int list_neighboor[] = new int[number_state];
@@ -53,7 +53,7 @@ public class ImmigrationGrid extends ConwayGrid {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < column; j++) {
                 grid[j][i] = ThreadLocalRandom.current().nextInt(0, number_state);
-                grid_copy[j][i] = grid[j][i];
+                gridCopy[j][i] = grid[j][i];
             }    
         }
     }

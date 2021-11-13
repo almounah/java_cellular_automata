@@ -1,109 +1,163 @@
+/**
+ * This module is about simulating Conway game of life.
+ * It consists of two classes:
+ *  <ul>
+ *   <li>ConwayGrid : the part responsible for doing calculation</li>
+ *   <li>ConwaySimulator : the part responsible of drawing</li>
+ *  </ul>
+ *
+ * Conway Game of life will later be extended to Schelling segregation
+ * and to the Immigration game.
+ *
+ * @author Haroun Al Mounayar
+ */
 package fr.Conway;
 
 
 import java.util.concurrent.ThreadLocalRandom;
-import fr.glob.*;
 import java.util.HashMap;
 import java.util.ArrayList;
 
 /**
- * ConwayGrid
+ * ConwayGrid.
  */
 public class ConwayGrid {
 
+    /** The number of column in the grid. */
     public int column;
-    public int rows;
-    public int init_alive;
-    public int grid[][];
-    public int grid_copy[][];
 
-    public ConwayGrid(int column, int rows, int init_alive) {
+    /** The number of rows in the grid. */
+    public int rows;
+
+    /** The number of initialy alive cells. */
+    public int initAlive;
+
+    /** The grid, a table of table. */
+    public int[][] grid;
+
+    /** A copy of the inital grid. */
+    public int[][] gridCopy;
+
+    /** Constructor of the grid.
+     *
+     * @param column is the number of column
+     * @param rows is the number of rows
+     * @param initAlive is the number of initialy alive cells
+     */
+    public ConwayGrid(final int column, final int rows, final int initAlive) {
         this.column = column;
         this.rows = rows;
-        this.init_alive = init_alive;
+        this.initAlive = initAlive;
         this.grid = new int[column][rows];
-        this.grid_copy = new int[column][rows];
+        this.gridCopy = new int[column][rows];
     }
 
+    /** Initialize the grid and its copy by putting 0 and 1 in its cases. */
     public void initialize() {
         // Everything is dead, so 0
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < column; j++) {
                 grid[j][i] = 0;
-                grid_copy[j][i] = 0;
-            }    
+                gridCopy[j][i] = 0;
+            }
         }
 
         // Some are randomly alive, so 1
-        int x, y;
-        for (int i = 0; i < init_alive; i++) {
+        int x;
+        int y;
+        for (int i = 0; i < initAlive; i++) {
             x = ThreadLocalRandom.current().nextInt(0, rows);
             y = ThreadLocalRandom.current().nextInt(0, column);
             grid[y][x] = 1;
-            grid_copy[y][x] = 1;
+            gridCopy[y][x] = 1;
         }
     }
 
+    /** Restitute the initial grid saved in grod_copy. */
     public void reInit() {
-        
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < column; j++) {
-                grid[j][i] = grid_copy[j][i];
+                grid[j][i] = gridCopy[j][i];
             }
         }
     }
 
-    /*Tell us if you should update a cell*/
-    public boolean update_cell(int x, int y) {
-        int x_before, x_after;
-        int y_before, y_after;
+    /** Tell us if you should update a cell.
+     *
+     * @param x is the x coordinate of the cell
+     * @param y is the y coordinate of the cell
+     * @return Boolean True if we should update the cell and False if not
+     */
+    public boolean updateCell(final int x, final int y) {
+        int xBefore;
+        int xAfter;
+        int yBefore;
+        int yAfter;
 
-        x_before = (rows + x-1)%rows;
-        x_after = (x+1)%rows;
-        y_before = (column + y-1)%column;
-        y_after = (y+1)%column;
-        
-        int neighboor_sum = 0;
-        neighboor_sum += grid[y_before][x_before] + grid[y_before][x] + grid[y_before][x_after];
-        neighboor_sum += grid[y][x_before] + grid[y][x_after];
-        neighboor_sum += grid[y_after][x_before] + grid[y_after][x] + grid[y_after][x_after];
-        
-        if (neighboor_sum == 3 && grid[y][x] == 0) {
+        // We are using a circular grid.
+        // So we have to use modulo.
+        // We are not using if statements to improve the performance.
+        xBefore = (rows + x - 1) % rows;
+        xAfter = (x + 1) % rows;
+        yBefore = (column + y - 1) % column;
+        yAfter = (y + 1) % column;
+
+        // We just increment the neighboorSum by adding the value of the grid.
+        int neighboorSum = 0;
+        neighboorSum += grid[yBefore][xBefore] + grid[yBefore][x]
+                        + grid[yBefore][xAfter];
+        neighboorSum += grid[y][xBefore] + grid[y][xAfter];
+        neighboorSum += grid[yAfter][xBefore] + grid[yAfter][x]
+                        + grid[yAfter][xAfter];
+
+        // Here we apply conway rules
+        if (neighboorSum == 3 && grid[y][x] == 0) {
             return true;
-        } else if ((neighboor_sum > 3 || neighboor_sum < 2) && grid[y][x] == 1) {
+        } else if ((neighboorSum > 3 || neighboorSum < 2) && grid[y][x] == 1) {
             return true;
         }
 
         return false;
     }
 
-    // return the map of the coordinate of the cells to change
-    public HashMap<String,ArrayList<Integer>> get_to_change_list() {
+    /** Return the map of the coordinate of the cells to change.
+     *  @return a dictionnary having two list of integer (X and Y)
+     *
+     *  When updating our list we juts change the cells that have changed.
+     *  Thus we gain in performance instead of looking for the element.
+     */
+    public HashMap<String, ArrayList<Integer>> get_to_change_list() {
         ArrayList<Integer> list_tochange_x = new ArrayList<Integer>();
-        ArrayList<Integer> list_tochange_y = new ArrayList<Integer>();;
-       
-        HashMap<String,ArrayList<Integer>> map = new HashMap<String,ArrayList<Integer>>();
-        
-        map.put("x_coord",list_tochange_x);
-        map.put("y_coord",list_tochange_y);
+        ArrayList<Integer> list_tochange_y = new ArrayList<Integer>();
+
+        HashMap<String, ArrayList<Integer>> map = new HashMap<String, ArrayList<Integer>>();
+
+        map.put("x_coord", list_tochange_x);
+        map.put("y_coord", list_tochange_y);
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < column; j++) {
-                 if (update_cell(i, j)) {
+                 if (updateCell(i, j)) {
                      list_tochange_x.add(0, i);
                      list_tochange_y.add(0, j);
                  }
             }
         }
-        
+
         return map;
     }
 
-    public void update_grid(HashMap<String,ArrayList<Integer>> map) {
-        
+    /** Update the grid by just checking the coordinate of the changed cell.
+     *  @param map is the map giving the
+     *      list of the coordinate X with the key x_coord
+     *      list of the coordinate Y with the key y_coord
+     */
+    public void update_grid(final HashMap<String, ArrayList<Integer>> map) {
+
         ArrayList<Integer> list_tochange_x = map.get("x_coord");
         ArrayList<Integer> list_tochange_y = map.get("y_coord");
-        
+
         for (int i = 0; i < list_tochange_x.size(); i++) {
             grid[list_tochange_y.get(i)][list_tochange_x.get(i)]++;
             grid[list_tochange_y.get(i)][list_tochange_x.get(i)] %= 2;
