@@ -1,22 +1,51 @@
+/**
+ * This module is about simulating the Immigration game.
+ * It consists of two classes:
+ *  <ul>
+ *   <li>ImmigrationGrid : the part responsible for doing calculation</li>
+ *   <li>ImmigrationSimulator : the part responsible of drawing</li>
+ *  </ul>
+ *
+ * Note that ImmigrationGrid extends ConwayGrid and
+ * that ImmigrationSimulator extends ConwaySimulator.
+ *
+ * @author Haroun Al Mounayar
+ */
+
 package fr.Immigration;
 
-import fr.Conway.*;
+import fr.Conway.ConwaySimulator;
 import gui.GUISimulator;
 
 import java.awt.Color;
-import java.util.HashMap;
-import java.util.ArrayList;
 
 /**
- * ImmigrationSimulator
+ * ImmigrationSimulator.
  */
-public class ImmigrationSimulator extends ConwaySimulator{
-    
-    public int states_number;
+public class ImmigrationSimulator extends ConwaySimulator {
 
-    public ImmigrationSimulator(int size_of_square, int rows, Color[] list_color, GUISimulator win) {
-        super(size_of_square, rows, 0, new ImmigrationGrid(rows, rows, list_color.length), list_color, win);
-        this.states_number = list_color.length;
+    /** The number of state we need in the game. */
+    public int statesNumber;
+
+    /** The constructor of the simulator.
+     *  @param sizeOfSquare the size of a single square
+     *  @param rows the number of rows
+     *  @param listColor the list of the color
+     *  @param win the GUISimulator we want to draw on
+     */
+    public ImmigrationSimulator(final int sizeOfSquare,
+                                final int rows,
+                                final Color[] listColor,
+                                final GUISimulator win) {
+        super(sizeOfSquare,
+              rows,
+              0,
+              new ImmigrationGrid(rows,
+                                  rows,
+                                  listColor.length),
+              listColor, win);
+
+        this.statesNumber = listColor.length;
     }
 
 }
