@@ -148,7 +148,7 @@ public class AgentBoids {
      * */
     private void mouvementBoids(final LinkedList<AgentBoids> agents) {
         int nbVoisins = 0;
-        int nbConnards = 0;
+        int nbTropProche = 0;
         MyVector cohesion = new MyVector(0, 0);
         MyVector alignement = new MyVector(0, 0);
         MyVector separation = new MyVector(0, 0);
@@ -165,7 +165,7 @@ public class AgentBoids {
                     diff.normalize();
                     diff.div(dst);
                     separation.add(diff);
-                    nbConnards++;
+                    nbTropProche++;
                 }
             }
         }
@@ -180,8 +180,8 @@ public class AgentBoids {
             MyVector steer = MyVector.sub(alignement, vitesse);
             appliquerForce(steer);
         }
-        if (nbConnards > 0) {
-            separation.div(nbConnards);
+        if (nbTropProche > 0) {
+            separation.div(nbTropProche);
             separation.normalize();
             separation.mult(vitRepultionMax);
             MyVector steer = MyVector.sub(separation, vitesse);
