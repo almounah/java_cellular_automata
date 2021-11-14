@@ -6,7 +6,7 @@ public class MyVector {
     /**Value on the x-axis  */
     public double x;
     /**Value on the y-axis  */
-    public double y;  
+    public double y;
 
     /** The constructor of MyVector.
      *  @param x The wanted x value
@@ -143,5 +143,4 @@ public class MyVector {
         return fin;
     }
 
-  
 }
