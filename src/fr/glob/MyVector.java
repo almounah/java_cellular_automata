@@ -79,14 +79,14 @@ public class MyVector {
     @Override
     public final String toString() { // 2 chiffres après la virgule
         String fin = "{x=";
-        String s = String.valueOf(x)+"000";
+        String s = String.valueOf(x) + "000";
         int ip = s.indexOf('.');
-        fin += s.substring(0,ip+3);
+        fin += s.substring(0, ip + 3);
         fin += ", y=";
 
-        s = String.valueOf(y)+"000";
+        s = String.valueOf(y) + "000";
         ip = s.indexOf('.');
-        fin += s.substring(0,ip+3);
+        fin += s.substring(0, ip + 3);
         fin += "}";
         return fin;
     }
