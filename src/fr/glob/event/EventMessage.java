@@ -8,7 +8,7 @@ public class EventMessage extends Event {
         this.value = value;
     }
 
-    public void execute(){
+    public void execute() {
         System.out.println("Evenement executé, date="+getDateToPlay()+", value="+value);
     }
 

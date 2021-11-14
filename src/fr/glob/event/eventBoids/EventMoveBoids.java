@@ -6,7 +6,7 @@ import fr.glob.event.*;
 public class EventMoveBoids extends Event {
     protected AgentsBoids agents;
 
-    public EventMoveBoids(EventManager eventManager, AgentsBoids agents){
+    public EventMoveBoids(EventManager eventManager, AgentsBoids agents) {
         super(0, eventManager);
         this.agents = agents;
     }
@@ -17,7 +17,9 @@ public class EventMoveBoids extends Event {
     }
 
     public void execute(){
-        for (AgentBoids a : agents.getAgents()) a.update(agents.getWidth(), agents.getHeight(), agents.getAgents());
+        for (AgentBoids a : agents.getAgents()) {
+            a.update(agents.getWidth(), agents.getHeight(), agents.getAgents());
+        }
         EventManager em = getEventManager();
         em.addEvent(new EventMoveBoids(getDateToPlay()+1, em, agents));
     }

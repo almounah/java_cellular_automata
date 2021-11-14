@@ -15,9 +15,11 @@ public class EventMoveRedBalls extends EventMoveBalls {
         super(0, eventManager, balls);
     }
 
-    public void execute(){
-        for (Ball b : balls.getballsList()){
-            if (b.getColor() == Color.RED) b.update(balls.getWidth(),balls.getHeight());
+    public void execute() {
+        for (Ball b : balls.getballsList()) {
+            if (b.getColor() == Color.RED) {
+                b.update(balls.getWidth(), balls.getHeight());
+            }
         } 
         EventManager em = getEventManager();
         long nextDate = getDateToPlay()+moveRedBallsPeriod;

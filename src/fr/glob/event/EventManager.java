@@ -17,33 +17,39 @@ public class EventManager {
 
     public void addEvent(Event e){
         boolean b = eventQueue.add(e);
-        if(!b) System.err.println("EVENT ERROR: L'evenement ne s'est pas ajouté comme il faut!");
+        if(!b) {
+            System.err.println("EVENT ERROR: L'evenement ne s'est pas ajouté comme il faut!");
+        }
     }
 
-    //Reste t'il des Event?
-    public boolean isMoreEvent(){
+    // Reste t'il des Event?
+    public boolean isMoreEvent() {
         return !eventQueue.isEmpty();
     }
 
-    //Reste t'il des Event à executer pour la date courante?
-    public boolean isFinished(){
-        Event e = eventQueue.peek(); //Ne retire pas l'élément de la queue
-        if(e==null) return true; //queue vide
-        if(e.getDateToPlay()<=currentDate) return false;
+    // Reste t'il des Event à executer pour la date courante?
+    public boolean isFinished() {
+        Event e = eventQueue.peek(); // Ne retire pas l'élément de la queue
+        if (e == null) {
+            return true; // queue vide
+        }
+        if (e.getDateToPlay() <= currentDate) {
+            return false;
+        }
         return true;
     }
 
-    public void next(){
+    public void next() {
         currentDate++;
         //System.out.println("New date! -> "+currentDate);
-        while(!isFinished()){
+        while (!isFinished()) {
             Event e = eventQueue.poll();
             e.execute();
         }
     }
 
     //Sauvegarde l'êtat actuel comme état initiale de la queue (necessaire pour restart)
-    public void setInitialStatus(){
+    public void setInitialStatus() {
         if(initialQueue!=null) {
             System.err.println("ERROR : initialQueue est déjà définie!!!");
             return;
@@ -56,7 +62,7 @@ public class EventManager {
         }
     }
 
-    public void restart(){
+    public void restart() {
         if(initialQueue==null) {
             System.err.println("ERROR : l'état initiale de la queue d'Event "+
                 "n'a jamais été défini! Il faut utiliser 'setInitialStatus()'");

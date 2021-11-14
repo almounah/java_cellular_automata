@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class EventGrid extends Event {
     private ConwayGrid grid;
 
-    public EventGrid(EventManager eventManager, ConwayGrid grid){
+    public EventGrid(EventManager eventManager, ConwayGrid grid) {
         super(0, eventManager);
         this.grid = grid;
     }
@@ -18,7 +18,7 @@ public class EventGrid extends Event {
         this.grid = grid;
     }
 
-    public void execute(){
+    public void execute() {
         HashMap<String, ArrayList<Integer>> map = this.grid.getToChangeList();
         this.grid.updateGrid(map);
         EventManager em = getEventManager();
