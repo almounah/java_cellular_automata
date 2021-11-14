@@ -35,7 +35,7 @@ public class EventGrid extends Event {
         this.grid = grid;
     }
 
-    /** The execute method. */
+    /** the execute method. */
     public void execute() {
         HashMap<String, ArrayList<Integer>> map = this.grid.getToChangeList();
         this.grid.updateGrid(map);

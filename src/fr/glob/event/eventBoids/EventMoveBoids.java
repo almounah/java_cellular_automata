@@ -1,5 +1,5 @@
 /** This module is used for events in
- *  all the grids simulation.
+ *  all boids simulation.
  * */
 package fr.glob.event.eventBoids;
 
