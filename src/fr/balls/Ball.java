@@ -7,7 +7,6 @@
  *   <li>BallSimulator : for drawing </li>
  *  </ul>
  *
- * @author HarorOfLaughtale
  */
 package fr.balls;
 
