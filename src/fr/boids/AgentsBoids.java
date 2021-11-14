@@ -35,10 +35,10 @@ public class AgentsBoids {
     /** The height. */
     private int h;
 
-    /**Number of boids group created*/
+    /** Number of boids group created. */
     public static int nbGroup = 3;
 
-    /**List of color we that represent groups */
+    /** List of color we that represent groups. */
     public static Color[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.magenta, Color.ORANGE};
 
     /** The constructor of the many Boids.
@@ -114,7 +114,7 @@ public class AgentsBoids {
             //soustraction pour centrer l'intervalle en 0
             dx = r.nextInt(maxSpeed) - maxSpeed / 2;
             dy = r.nextInt(maxSpeed) - maxSpeed / 2;
-            c = colors[i%nbGroup];
+            c = colors[i % nbGroup];
             addAgent(new MyVector(x, y), new MyVector(dx, dy), radius, c);
         }
     }

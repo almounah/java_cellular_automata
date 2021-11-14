@@ -72,7 +72,7 @@ public class AgentBoid {
      * @param c : the color
      * */
     public AgentBoid(final MyVector position, final int rayon, final Color c) {
-        this(position, new MyVector(0,0), rayon, c);
+        this(position, new MyVector(0, 0), rayon, c);
     }
 
     /** The second constructor of a Boids.
@@ -113,10 +113,10 @@ public class AgentBoid {
     public void rejoindre(final MyVector cible) {
         //variation de pos = vitesse
         MyVector desired = MyVector.sub(cible, position);
-        
+
         desired.normalize();
         desired.mult(vitMax); // Pour ne pas foncer à toutes berzingue
-        
+
         //'steer force' de Reynolds
         MyVector steer = MyVector.sub(desired, vitesse);
         appliquerForce(steer);
