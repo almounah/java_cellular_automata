@@ -13,6 +13,7 @@ import gui.GUISimulator;
 import java.awt.Color;
 
 /**TestSimulator.
+ * Here we test our simulation.
  */
 public class TestSimulator {
 
