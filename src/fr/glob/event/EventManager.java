@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.PriorityQueue;
 
 /** EventManager.
+ *      <li> Event manager that has many events </li>
  */
 public class EventManager {
     /** The current time. */

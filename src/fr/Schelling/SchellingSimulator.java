@@ -20,6 +20,7 @@ import gui.GUISimulator;
 
 /**
  * SchellingSimulator.
+ *   <li>SchellingSimulator : the part responsible of drawing</li>
  */
 public class SchellingSimulator extends ConwaySimulator{
 

@@ -20,6 +20,7 @@ import fr.glob.Simulateur;
 import fr.glob.event.eventBalls.*;
 
 /** BallSimulator.
+ *   <li>BallSimulator : for drawing </li>
  */
 public class BallsSimulator extends Simulateur {
 

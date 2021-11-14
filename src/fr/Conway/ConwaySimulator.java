@@ -9,7 +9,6 @@
  * Conway Game of life will later be extended to Schelling segregation
  * and to the Immigration game.
  *
- * @author Haroun Al Mounayar
  */
 package fr.Conway;
 
@@ -21,6 +20,7 @@ import java.awt.Color;
 
 /**
  * ConwaySimulator.
+ *   <li>ConwaySimulator : the part responsible of drawing</li>
  */
 public class ConwaySimulator extends Simulateur {
 

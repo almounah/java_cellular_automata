@@ -15,6 +15,7 @@ import fr.glob.MyVector;
 
 /**
  * Ball.
+ *   <li>Ball : the part responsible for doing calculation for one ball</li>
  * */
 public class Ball {
 

@@ -21,6 +21,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * ImmigrationGrid.
+ *   <li>ImmigrationGrid : the part responsible for doing calculation</li>
  */
 public class ImmigrationGrid extends ConwayGrid {
 

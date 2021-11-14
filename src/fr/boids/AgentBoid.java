@@ -21,6 +21,8 @@ import java.util.LinkedList;
 
 /**
  * AgentBoid.
+ *   <li>AgentBoids : the part responsible for doing calculation
+ *                    for 1 boids </li>
 */
 public class AgentBoid {
 

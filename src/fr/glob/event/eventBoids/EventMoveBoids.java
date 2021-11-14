@@ -9,6 +9,8 @@ import fr.glob.event.Event;
 import fr.glob.event.EventManager;
 
 /** EventMoveBoids.
+ *  This module is used for events in
+ *  all boids simulation.
  */
 public class EventMoveBoids extends Event {
 

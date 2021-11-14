@@ -20,6 +20,8 @@ import java.util.Random;
 import java.awt.Color;
 
 /** AgentsBoids.
+ *   <li>AgentsBoids : the part responsible of doing calculations
+ *                    for a list of boids.</li>
  */
 public class AgentsBoids {
 

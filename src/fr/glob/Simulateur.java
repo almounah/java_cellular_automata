@@ -10,7 +10,8 @@ import java.awt.Color;
 
 import fr.glob.event.EventManager;
 
-/** Simulateur. */
+/** Simulateur.
+ * This is our abstract class for simulation. */
 public abstract class Simulateur implements Simulable {
 
     /** The width. */

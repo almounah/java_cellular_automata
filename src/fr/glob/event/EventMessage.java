@@ -10,7 +10,9 @@
  * */
 package fr.glob.event;
 
-/** EventMessage. */
+/** EventMessage.
+ *      <li> Event Message to test events later with strings. </li>
+ */
 public class EventMessage extends Event {
 
     /**The value of the event. */

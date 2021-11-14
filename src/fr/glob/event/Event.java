@@ -13,6 +13,7 @@ package fr.glob.event;
 import java.lang.Comparable;
 
 /** Event.
+ *      <li> Event an abstract </li>
  */
 public abstract class Event implements Comparable<Event> {
 

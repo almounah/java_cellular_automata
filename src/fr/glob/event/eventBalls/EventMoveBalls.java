@@ -8,7 +8,10 @@ package fr.glob.event.eventBalls;
 import fr.balls.*;
 import fr.glob.event.*;
 
-/** EvenMoveBalls. */
+/** EvenMoveBalls.
+ *  Either to move all balls or just the blue
+ *  balls or just the red balls.
+ */
 public class EventMoveBalls extends Event {
 
     /** The balls we want to update with event. */

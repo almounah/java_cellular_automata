@@ -17,6 +17,10 @@ import java.util.Random;
 import java.awt.Color;
 import fr.glob.MyVector;
 
+/**
+ * Balls.
+ *   <li>Balls : for the calculation for many balls</li>
+ * */
 public class Balls {
     /** The list of the balls. */
     private ArrayList<Ball> ballsList;

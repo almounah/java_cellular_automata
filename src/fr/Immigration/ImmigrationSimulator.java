@@ -21,6 +21,7 @@ import java.awt.Color;
 
 /**
  * ImmigrationSimulator.
+ *   <li>ImmigrationSimulator : the part responsible of drawing</li>
  */
 public class ImmigrationSimulator extends ConwaySimulator {
 

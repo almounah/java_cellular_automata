@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 /**
  * ShellingGrid.
+ *   <li>SchellingGrid : the part responsible for doing calculation</li>
  */
 public class SchellingGrid extends ConwayGrid {
 

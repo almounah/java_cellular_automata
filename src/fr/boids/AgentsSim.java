@@ -22,6 +22,7 @@ import fr.glob.Simulateur;
 import fr.glob.event.eventBoids.EventMoveBoids;
 
 /**AgentSim.
+ *   <li>AgentsSim : for drawing </li>
  */
 public class AgentsSim extends Simulateur {
 

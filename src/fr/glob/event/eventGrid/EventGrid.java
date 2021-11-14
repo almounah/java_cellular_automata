@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.ArrayList;
 
 /** EventGrid.
+ * This module is used for events in
+ *  all the grids simulation.
  */
 public class EventGrid extends Event {
 

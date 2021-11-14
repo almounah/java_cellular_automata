@@ -10,6 +10,8 @@ import fr.balls.*;
 import fr.glob.event.*;
 
 /** EventMoveRedBalls.
+ *  Either to move all balls or just the blue
+ *  balls or just the red balls.
  */
 public class EventMoveRedBalls extends EventMoveBalls {
 
