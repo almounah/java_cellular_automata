@@ -1,56 +1,61 @@
-/**
- * This module is about simulating Event.
- * It consists of two classes:
+/**This Module is used to make Events.
+ * It contains many classes :
  *  <ul>
- *   <li>EventManager : the part responsible for dealing with Events</li>
- *   <li>Event : and abstract extended class representing Event</li>
+ *      <li> Event an abstract </li>
+ *      <li> Event manager that has many events </li>
+ *      <li> Event Message for strings. </li>
+ *      <li> Event Message to test events later with strings. </li>
+ *           like eventBalls, eventgrid ... </li>
  *  </ul>
- *
- */
+ * */
 package fr.glob.event;
 
 import java.lang.Comparable;
 
-/** Abstract Event class, implements Comparable<Event> interface.
+/** Event.
  */
 public abstract class Event implements Comparable<Event> {
-    /**The date to play the event */
+
+    /** The date when the Event will be played. */
     private long dateToPlay;
-    /**The Event manager liked to this event */
+
+    /** The event manager used to add the event to. */
     private EventManager em;
 
-    /** The constructor of Event.
-     *  @param dateToPlay The date to play the event
-     *  @param eventManager The Event manager liked to this event
+    /** The constructor.
+     * @param dateToPlay : the date when the event will be played
+     * @param eventManager : the eventmanager that manage the event
      * */
     public Event(long dateToPlay, EventManager eventManager) {
         this.dateToPlay = dateToPlay;
         this.em = eventManager;
     }
 
-    /**Getter of dateToPlay field
-     * @return dateToPlay
-     */
+    /** Get the date when the event will be played.
+     *  @return the date.
+     * */
     public long getDateToPlay() {
         return this.dateToPlay;
     }
 
-    /**Getter of eventManager field
-     * @return eventManager
-     */
+    /** Get the event manager that manage the Event.
+     *  @return the event manager.
+     * */
     public EventManager getEventManager() {
         return this.em;
     }
 
-    /**Comparator used in priority queue to deal with Event
-     * @param other Event to compare with this
-     * @return 1 if the dateToPlay of this event is grater than the date of other, 
-     */
+    /** We override the method compareTo.
+     * It compares two events.
+     * @param other : the other event.
+     * @return 1 if the event is executed later that other
+     *         0 if not.
+     * */
     @Override
     public int compareTo(Event other) {
         // On retourne -1 si la date de this est plus petite que other,
         // this aura alors une priorité plus grande
-        if(this.getDateToPlay() > other.getDateToPlay()) {
+        if (this.getDateToPlay() > other.getDateToPlay()) {
             return 1;
         }
         if (this.getDateToPlay() < other.getDateToPlay()) {
@@ -59,14 +64,12 @@ public abstract class Event implements Comparable<Event> {
         return 0;
     }
 
-    /** Abstract method doing what the event is build for.
-     * Used by the EventManager befor deleting the Event
-     */
+    /** The execute method of an event. */
     public abstract void execute();
-    
-    /** The toString method.
-     * @return the string representing the vector.
-     */
+
+    /** Return the string representing the event.
+     *  @return the string.
+     * */
     @Override
     public String toString() {
         return "Event at date " + dateToPlay;

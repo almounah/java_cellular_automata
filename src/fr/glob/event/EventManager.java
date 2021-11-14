@@ -1,55 +1,58 @@
-/**
- * This module is about simulating Event.
- * It consists of two classes:
+/**This Module is used to make Events.
+ * It contains many classes :
  *  <ul>
- *   <li>EventManager : the part responsible for dealing with Events</li>
- *   <li>Event : and abstract extended class representing Event</li>
+ *      <li> Event an abstract </li>
+ *      <li> Event manager that has many events </li>
+ *      <li> Many other classes that extends The abstract Event
+ *      <li> Many other classes that extends The abstract Event
+ *           like eventBalls, eventgrid ... </li>
  *  </ul>
- *
- */
+ * */
 package fr.glob.event;
 
 import java.util.Iterator;
 import java.util.PriorityQueue;
 
-/** EventManager
+/** EventManager.
  */
 public class EventManager {
-    /** The current date of the manager. */
+    /** The current time. */
     private long currentDate;
-    /** The queue of Event to come, implemented using a java PriorityQueue*/
+
+    /** The queue representing all events. */
     private PriorityQueue<Event> eventQueue;
-    /** The queue intitial event, used to reset eventQueue*/
+
+    /** The copy of the queue representing all initial events. */
     private PriorityQueue<Event> initialQueue;
 
-    /** The constructor of an EventManager
-     * */
+    /** The constructor of the Event Manager. */
     public EventManager() {
         this.currentDate = 0;
         this.eventQueue = new PriorityQueue<Event>();
         this.initialQueue = null;
     }
 
-    /** Add an event to the queue, 
-     * using his dateToPlay as comparative value (lower means high priority)
-     * @param e Event to add
+    /** Add the event to the eventManager.
+     * @param e : the event to add.
      * */
-    public void addEvent(Event e){
+    public void addEvent(Event e) {
         boolean b = eventQueue.add(e);
-        if(!b) {
+        if (!b) {
             System.err.println("EVENT ERROR: L'evenement ne s'est pas ajouté comme il faut!");
         }
     }
 
-    /** Tell if the event queue is empty or not
-     * @return true is the queue is empty, false otherwise
+    /** Tell us if the list is not empty.
+     *  @return false. if the list is empty
+     *          true if not.
      * */
     public boolean isMoreEvent() {
         return !eventQueue.isEmpty();
     }
 
-    /** Tell if all event with an dateToPlay lower or equal to currentDate has been played
-     * @return true all concerned event has been played, false otherwise
+    /** The isfinished method.
+     * @return True if we still have event to execute
+     *         at our date. False if not.
      * */
     public boolean isFinished() {
         Event e = eventQueue.peek(); // Ne retire pas l'élément de la queue
@@ -62,49 +65,46 @@ public class EventManager {
         return true;
     }
 
-    /** Increase the current date and play all Event liked
-     * */
+    /** Execute the next event. */
     public void next() {
         currentDate++;
-        //System.out.println("New date! -> "+currentDate);
         while (!isFinished()) {
             Event e = eventQueue.poll();
             e.execute();
         }
     }
 
-    /** Save as initial status the curent state of the event queue.
-     * Use restart method to come back to this saved state.
+    /** Save the current state in the initialQueue.
+     *  usefull for the restart.
      * */
     public void setInitialStatus() {
-        if(initialQueue!=null) {
+        if (initialQueue != null) {
             System.err.println("ERROR : initialQueue est déjà définie!!!");
             return;
         }
         initialQueue = new PriorityQueue<Event>();
         Iterator<Event> it = eventQueue.iterator();
-        while(it.hasNext()){
+        while (it.hasNext()) {
             Event e = it.next();
             initialQueue.add(e);
         }
     }
 
-    /** Restore the state of the queue as the state saved by setInitialStatus() method.
-     * */
+    /** Restart method when debut is pressed. */
     public void restart() {
-        if(initialQueue==null) {
-            System.err.println("ERROR : l'état initiale de la queue d'Event "+
-                "n'a jamais été défini! Il faut utiliser 'setInitialStatus()'");
+        if (initialQueue == null) {
+            System.err.println("ERROR : l'état initiale de la queue d'Event "
+                + "n'a jamais été défini! Il faut utiliser 'setInitialStatus()'");
             return;
         }
         currentDate = 0;
         eventQueue.clear();
         Iterator<Event> it = initialQueue.iterator();
-        while(it.hasNext()){
+        while (it.hasNext()) {
             Event e = it.next();
             eventQueue.add(e);
         }
-        
+
     }
 
 }
