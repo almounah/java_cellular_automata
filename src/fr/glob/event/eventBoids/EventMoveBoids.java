@@ -3,7 +3,7 @@
  * */
 package fr.glob.event.eventBoids;
 
-import fr.boids.AgentBoids;
+import fr.boids.AgentBoid;
 import fr.boids.AgentsBoids;
 import fr.glob.event.Event;
 import fr.glob.event.EventManager;
@@ -36,7 +36,7 @@ public class EventMoveBoids extends Event {
 
     /** The execute method. */
     public void execute() {
-        for (AgentBoids a : agents.getAgents()) {
+        for (AgentBoid a : agents.getAgents()) {
             a.update(agents.getWidth(), agents.getHeight(), agents.getAgents());
         }
         EventManager em = getEventManager();

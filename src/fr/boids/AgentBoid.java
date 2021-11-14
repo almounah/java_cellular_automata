@@ -20,9 +20,9 @@ import java.util.LinkedList;
 
 
 /**
- * AgentBoids.
+ * AgentBoid.
 */
-public class AgentBoids {
+public class AgentBoid {
 
     /** The position vector. */
     private MyVector position;
@@ -39,7 +39,10 @@ public class AgentBoids {
     /** The mass of the boids. */
     private double masse = 30.0;
 
-    /** The color of the boids. */
+    /** The color of the boids.
+     * Color is used also to make different groups of boids
+     * A red boid will not folow a group of blue boids
+     */
     private Color color;
 
     /** The length of the boids. */
@@ -68,14 +71,8 @@ public class AgentBoids {
      * @param rayon : the radium
      * @param c : the color
      * */
-    public AgentBoids(final MyVector position, final int rayon, final Color c) {
-        this.position = position;
-        this.vitesse = new MyVector(0, 0);
-        this.acceleration = new MyVector(0, 0);
-        this.rayon = rayon;
-        portee = rayon * 8;
-        espacePerso = portee / 2;
-        this.color = c;
+    public AgentBoid(final MyVector position, final int rayon, final Color c) {
+        this(position, new MyVector(0,0), rayon, c);
     }
 
     /** The second constructor of a Boids.
@@ -85,7 +82,7 @@ public class AgentBoids {
      * @param rayon : the radium
      * @param c : the color
      * */
-    public AgentBoids(final MyVector position,
+    public AgentBoid(final MyVector position,
                       final MyVector vitesse,
                       final int rayon,
                       final Color c) {
@@ -125,18 +122,18 @@ public class AgentBoids {
         appliquerForce(steer);
     }
 
-    /** Tells if a boid is visible to another.
+    /** Tells if a boid 'v' is visible to this agent.
      * @param dst : the distance between the boids.
      * @param v : the other boids.
      * @return True if is visible and False if not.
      * */
-    private boolean isVisible(final AgentBoids v, final  double dst) {
+    private boolean isVisible(final AgentBoid v, final double dst) {
         if (dst > portee) {
             return false; //Trop loin
         }
         //dst-debut
-        MyVector fromMeToV = MyVector.sub(v.getPosition(), this.position);
-        double angle = MyVector.angle(this.vitesse, fromMeToV);
+        MyVector fromMeToV = MyVector.sub(v.getPosition(), this.getPosition());
+        double angle = MyVector.angle(this.getVitesse(), fromMeToV);
         if (angle > angleLimite) {
             return false; // Trop derrière
         }
@@ -146,21 +143,23 @@ public class AgentBoids {
     /**Apply the 3 main forces by looping through neighboors.
      * @param agents the list of the boids.
      * */
-    private void mouvementBoids(final LinkedList<AgentBoids> agents) {
+    private void mouvementBoids(final LinkedList<AgentBoid> agents) {
         int nbVoisins = 0;
         int nbTropProche = 0;
         MyVector cohesion = new MyVector(0, 0);
         MyVector alignement = new MyVector(0, 0);
         MyVector separation = new MyVector(0, 0);
-        Iterator<AgentBoids> it = agents.iterator();
+        Iterator<AgentBoid> it = agents.iterator();
         while (it.hasNext()) {
-            AgentBoids v = it.next();
+            AgentBoid v = it.next();
             double dst = position.dst(v.getPosition());
-            if ((v != this) && isVisible(v, dst)) {
-                nbVoisins++;
-                cohesion.add(v.getPosition());
-                alignement.add(v.getVitesse());
-                if (dst < espacePerso) {
+            if ((v != this) && isVisible(v, dst)) { //Si visible
+                if (v.getColor() == this.getColor()) { //Si c'est un ami visible
+                    nbVoisins++;
+                    cohesion.add(v.getPosition());
+                    alignement.add(v.getVitesse());
+                }
+                if (dst < espacePerso) { //Dans tout les cas si il est visible
                     MyVector diff = MyVector.sub(position, v.getPosition());
                     diff.normalize();
                     diff.div(dst);
@@ -233,7 +232,7 @@ public class AgentBoids {
      * */
     public void update(final int w,
                        final int h,
-                       final LinkedList<AgentBoids> agents) {
+                       final LinkedList<AgentBoid> agents) {
         checkBounds(w, h, (w + h) / 20); //limiteBord = moyenne/10
         mouvementBoids(agents);
 

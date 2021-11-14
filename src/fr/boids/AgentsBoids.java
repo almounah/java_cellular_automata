@@ -24,10 +24,10 @@ import java.awt.Color;
 public class AgentsBoids {
 
     /** The list of boids. */
-    private LinkedList<AgentBoids> agentsList;
+    private LinkedList<AgentBoid> agentsList;
 
     /** The copy of list of boids. */
-    private LinkedList<AgentBoids> copy;
+    private LinkedList<AgentBoid> copy;
 
     /** The width. */
     private int w;
@@ -35,8 +35,11 @@ public class AgentsBoids {
     /** The height. */
     private int h;
 
-    /** The color of boids. */
-    public static Color[] colors = {Color.RED};
+    /**Number of boids group created*/
+    public static int nbGroup = 3;
+
+    /**List of color we that represent groups */
+    public static Color[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.magenta, Color.ORANGE};
 
     /** The constructor of the many Boids.
      * @param nbToAdd : the number of boids
@@ -44,8 +47,8 @@ public class AgentsBoids {
      * @param h : the height
      * */
     public AgentsBoids(final int nbToAdd, final int w, final int h) {
-        agentsList = new LinkedList<AgentBoids>();
-        copy = new LinkedList<AgentBoids>();
+        agentsList = new LinkedList<AgentBoid>();
+        copy = new LinkedList<AgentBoid>();
         this.w = w;
         this.h = h;
         addRandomAgents(nbToAdd);
@@ -54,7 +57,7 @@ public class AgentsBoids {
     /** Get the list of boids.
      * @return the list.
      * */
-    public LinkedList<AgentBoids> getAgents() {
+    public LinkedList<AgentBoid> getAgents() {
         return this.agentsList;
     }
 
@@ -77,10 +80,10 @@ public class AgentsBoids {
         if (agentsList.size() != copy.size()) {
             throw new RuntimeException("reInit : Listes de taille différentes!");
         }
-        Iterator<AgentBoids> itL = agentsList.iterator();
-        Iterator<AgentBoids> itC = copy.iterator();
-        AgentBoids a;
-        AgentBoids c;
+        Iterator<AgentBoid> itL = agentsList.iterator();
+        Iterator<AgentBoid> itC = copy.iterator();
+        AgentBoid a;
+        AgentBoid c;
 
         while (itL.hasNext() && itC.hasNext()) {
             a = itL.next();
@@ -101,18 +104,17 @@ public class AgentsBoids {
         int y;
         int dx;
         int dy;
-        int maxSpeed = (int) AgentBoids.vitMax;
+        int maxSpeed = (int) AgentBoid.vitMax;
         int radius = 5;
         //int radiusMin = 10, radiusMax = 15;
         for (int i = 0; i < nbToAdd; i++) {
-            //radius = r.nextInt(radiusMax-radiusMin) + radiusMin;
             // Intervalle [radius; w-radius]
             x = r.nextInt(w - radius * 2) + radius;
             y = r.nextInt(h - radius * 2) + radius;
             //soustraction pour centrer l'intervalle en 0
             dx = r.nextInt(maxSpeed) - maxSpeed / 2;
             dy = r.nextInt(maxSpeed) - maxSpeed / 2;
-            c = colors[i % colors.length];
+            c = colors[i%nbGroup];
             addAgent(new MyVector(x, y), new MyVector(dx, dy), radius, c);
         }
     }
@@ -126,9 +128,9 @@ public class AgentsBoids {
     public void addAgent(final MyVector position,
                          final int rayon,
                          final Color c) {
-        agentsList.add(new AgentBoids(position, rayon, c));
+        agentsList.add(new AgentBoid(position, rayon, c));
         //Copie de position necessaire
-        copy.add(new AgentBoids(new MyVector(position), rayon, c));
+        copy.add(new AgentBoid(new MyVector(position), rayon, c));
     }
 
     /** Add one boids agent to the list but with speed.
@@ -141,8 +143,8 @@ public class AgentsBoids {
                          final MyVector vitesse,
                          final int rayon,
                          final Color c) {
-        agentsList.add(new AgentBoids(position, vitesse, rayon, c));
-        copy.add(new AgentBoids(new MyVector(position),
+        agentsList.add(new AgentBoid(position, vitesse, rayon, c));
+        copy.add(new AgentBoid(new MyVector(position),
                                 new MyVector(vitesse),
                                 rayon,
                                 c)); //Copie de position necessaire
@@ -150,7 +152,7 @@ public class AgentsBoids {
 
     /** Update the list of boids Agents. */
     public void update() {
-        for (AgentBoids a : agentsList) {
+        for (AgentBoid a : agentsList) {
             a.update(w, h, agentsList);
         }
     }

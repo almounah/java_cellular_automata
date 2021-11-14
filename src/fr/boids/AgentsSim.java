@@ -47,7 +47,7 @@ public class AgentsSim extends Simulateur {
     /** Draw the boids. */
     private void drawAgents() {
         boolean printSpeed = true;
-        for (AgentBoids a : agents.getAgents()) {
+        for (AgentBoid a : agents.getAgents()) {
             win.addGraphicalElement(
                 new Oval(
                     (int) a.getPosition().x,
