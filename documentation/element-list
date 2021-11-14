@@ -1,0 +1,11 @@
+fr.balls
+fr.boids
+fr.Conway
+fr.glob
+fr.glob.event
+fr.glob.event.eventBalls
+fr.glob.event.eventBoids
+fr.glob.event.eventGrid
+fr.Immigration
+fr.Schelling
+fr.tests

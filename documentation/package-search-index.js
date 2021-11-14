@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"fr.balls"},{"l":"fr.boids"},{"l":"fr.Conway"},{"l":"fr.glob"},{"l":"fr.glob.event"},{"l":"fr.glob.event.eventBalls"},{"l":"fr.glob.event.eventBoids"},{"l":"fr.glob.event.eventGrid"},{"l":"fr.Immigration"},{"l":"fr.Schelling"},{"l":"fr.tests"}]
