@@ -21,24 +21,22 @@
 #   -classpath : repertoire dans lequel sont cherches les .class deja compiles
 #   -sourcepath : repertoire dans lequel sont cherches les .java (dependances)
 
+
 all: simulator
 
-testExecText:
+testText:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/fr/tests/TestText.java
+	java -classpath bin:bin/gui.jar fr/tests/TestText balls
 	java -classpath bin:bin/gui.jar fr/tests/TestText events
 
-testExecGUI:
+testGUI:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/fr/tests/TestGUI.java
 	java -classpath bin:bin/gui.jar fr/tests/TestGUI
 
 simulator:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/fr/tests/TestSimulator.java
 
-# Execution:
-# on peut taper directement la ligne de commande :
-#   > java -classpath bin TestGUI
-# ou bien lancer l'execution en passant par ce Makefile:
-#   > make exeIHM
+
 
 exeBallsSims:
 	java -classpath bin:bin/gui.jar fr/tests/TestSimulator balls

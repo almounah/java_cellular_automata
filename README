@@ -1,19 +1,46 @@
 Ensimag 2A POO - TPL
 ============================
 
-- src: contient les classes fournies par les enseignants 
-  -> TestGUI.java : cree une fenetre graphique "Invaders", pas de simulation
-  Et c'est tout, en fait!
+
+- src: contient les classes fournies par les enseignants.
+  Mais il y a aussi le code fourni par les membres de ce groupe.
+  La classe TestGUI.java : cree une fenetre graphique "Invaders", pas de simulation
+
 
 - bin/gui.jar: archive Java contenant les classes de l'interface graphique. Voir un exemple d'utilisation dans TestGUI.java
 
-- doc_gui: la documentation (API) des classes de l'interface graphique contenues dans gui.jar. Point d'entrée: index.html
 
-- Makefile: quelques explications sur la compilation en ligne, notamment la notion de classpath et l'utilisation de ihm.jar
+- doc_gui: la documentation (API) des classes de l'interface graphique contenues dans gui.jar. Point d'entrée: doc_gui/index.html
 
-- Pour que VSCode ne ralle pas quand on utilise gui.jar, mettre dans ".vscode/settings.json" (à créer si besoin) 
-{
-    "java.project.referencedLibraries": [
-        "bin/gui.jar"
-    ]
-}
+
+- documentation: La documentation des classes créées par notre groupe (dossier src/) lors de ce TP. Point d'entrée: documentation/index.html
+
+
+- Makefile: fichier de compilation et d'execution de ce TP. Il y a plusieurs cibles décrites ci dessous:
+  -> make simulator
+    Compile le projet et génère les .class dans le dossier bin/
+    Necessaire avant d'utiliser toute autre cible.
+
+  -> make exeBallsSims
+    Execute la partie 'balls' de ce TP (sujet partie 2) améliorée.
+
+  -> make exeConway
+    Execute la partie 'Jeu de la Vie de Conway' de ce TP (sujet partie 3.1).
+
+  -> make exeImmigration
+   Execute la partie 'Jeu de l'immigration' de ce TP (sujet partie 3.2).
+
+  -> make exeSchelling
+   Execute la partie 'Modèle de Schelling' de ce TP (sujet partie 3.3).
+
+  -> make exeAgentsSim
+   Execute la partie 'Modèle d'essaims: les boids' de ce TP (sujet partie 3.3).
+  
+  -> make clean
+    Supprime tous les fichiers .class du dossier bin/
+
+  Par exemple, si on veut lancer le simulateur de boids, il faut 
+  taper les deux commandes suivantes (dans le même dossier que le Makefile):
+    -> make simulator
+    -> make exeAgentsSim
+  
