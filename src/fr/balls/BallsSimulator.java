@@ -27,22 +27,6 @@ public class BallsSimulator extends Simulateur {
     /** The list of the balls we want to simulate. */
     private Balls balls;
 
-    /** The constructor of ball simulator.
-     *  @param width
-     *  @param height
-     *  @param nbBalls The number of Balls
-     *  @param win : where we want to Draw the Balls
-     * */
-    public BallsSimulator(final int width,
-                          final int height,
-                          final int nbBalls,
-                          final GUISimulator win) {
-        super(width, height, win);
-        this.balls = new Balls(nbBalls, width, height, false);
-        em.addEvent(new EventMoveBalls(this.em, this.balls));
-        em.setInitialStatus();
-    }
-
     /** The second constructor of ball simulator.
      *  It is used to demonstrate the event manager.
      *  @param width
@@ -59,8 +43,12 @@ public class BallsSimulator extends Simulateur {
                           final boolean useRedBlueBalls) {
         super(width, height, win);
         this.balls = new Balls(nbBalls, width, height, useRedBlueBalls);
-        em.addEvent(new EventMoveRedBalls(this.em, balls));
-        em.addEvent(new EventMoveBlueBalls(this.em, balls));
+        if (useRedBlueBalls) {
+            em.addEvent(new EventMoveRedBalls(this.em, balls));
+            em.addEvent(new EventMoveBlueBalls(this.em, balls));
+        } else {
+            em.addEvent(new EventMoveBalls(this.em, this.balls));
+        }        
         em.setInitialStatus();
     }
 
