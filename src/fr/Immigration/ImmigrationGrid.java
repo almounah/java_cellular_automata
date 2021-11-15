@@ -9,7 +9,6 @@
  * Note that ImmigrationGrid extends ConwayGrid and
  * that ImmigrationSimulator extends ConwaySimulator.
  *
- * @author Haroun Al Mounayar
  */
 package fr.Immigration;
 

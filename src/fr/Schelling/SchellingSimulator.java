@@ -9,7 +9,6 @@
  * Note that SchellingGrid extends ConwayGrid and
  * that SchellingSimulator extends ConwaySimulator.
  *
- * @author Haroun Al Mounayar
  */
 package fr.Schelling;
 
