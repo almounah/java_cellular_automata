@@ -3,3 +3,5 @@ bin/
 .vscode/
 sujet.pdf
 *.class
+doc_gui
+sun_checks.xml
